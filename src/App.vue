@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { User } from './api'
+import type { User } from './platforms'
 import { onMounted, onUnmounted, ref } from 'vue'
-import { blockUser, searchUsers } from './api'
+import { getCurrentPlatform } from './platforms'
 import { sleep } from './utils'
 
 const keyword = ref('')
@@ -10,6 +10,7 @@ const isRunning = ref(false)
 const isStopped = ref(false)
 const blockedCount = ref(0)
 const logs = ref<Array<{ msg: string, color: string, time: string }>>([])
+const currentPlatform = getCurrentPlatform()
 
 const delay = 1000
 
@@ -25,17 +26,23 @@ async function startTask() {
     return
   }
 
+  if (!currentPlatform) {
+    // eslint-disable-next-line no-alert
+    alert('当前平台不支持！请在抖音或哔哩哔哩网页版使用')
+    return
+  }
+
   isRunning.value = true
   isStopped.value = false
   let currentPage = 0
   blockedCount.value = 0
   logs.value = []
 
-  addLog(`开始搜索「${keyword.value}」，目标拉黑 ${limit.value} 个用户`, '#667eea')
+  addLog(`[${currentPlatform.displayName}] 开始搜索「${keyword.value}」，目标拉黑 ${limit.value} 个用户`, '#667eea')
 
   while (!isStopped.value && blockedCount.value < limit.value) {
     addLog(`获取第 ${currentPage + 1} 页用户...`, '#2196F3')
-    const { users, hasMore } = await searchUsers(keyword.value, currentPage)
+    const { users, hasMore } = await currentPlatform.searchUsers(keyword.value, currentPage)
 
     if (users.length === 0) {
       addLog('无更多用户，任务结束', '#ff9800')
@@ -52,12 +59,16 @@ async function startTask() {
         sec_uid: item.user_info.sec_uid,
       }
 
-      if (item.user_info.user_tags?.some((tag: any) => tag.type === 'blocked_label')) {
+      const isBlocked = currentPlatform.name === 'douyin' 
+        ? item.user_info.user_tags?.some((tag: any) => tag.type === 'blocked_label')
+        : item.user_info.is_blocked
+      
+      if (isBlocked) {
         addLog(`已拉黑：${user.nickname}（跳过）`, '#999')
         continue
       }
 
-      if (await blockUser(user)) {
+      if (await currentPlatform.blockUser(user)) {
         blockedCount.value++
         addLog(`✅ 拉黑成功：${user.nickname}`, '#4caf50')
       }
@@ -123,7 +134,7 @@ onUnmounted(() => {
     :style="{ top: `${panelY}px`, left: `${panelX}px` }"
   >
     <div class="header" @mousedown="handleMouseDown">
-      🚫 抖音自动拉黑工具
+      🚫 {{ currentPlatform?.displayName || '多平台' }}自动拉黑工具
     </div>
     <div class="content">
       <div class="form-group">

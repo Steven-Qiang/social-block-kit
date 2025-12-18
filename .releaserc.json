@@ -22,7 +22,7 @@
       {
         "assets": [
           {
-            "path": "dist/douyin-block-kit.user.js",
+            "path": "dist/social-block-kit.user.js",
             "label": "Userscript"
           }
         ]

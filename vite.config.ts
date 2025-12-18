@@ -4,18 +4,26 @@ import monkey, { cdn } from 'vite-plugin-monkey'
 import pkg from './package.json'
 
 export default defineConfig({
+  server: {
+    host: '0.0.0.0',
+    cors: true,
+  },
   plugins: [
     vue(),
     monkey({
       entry: 'src/main.ts',
       userscript: {
-        name: '抖音搜索自动拉黑',
-        namespace: 'douyin-block-kit',
+        name: '社交平台自动拉黑工具',
+        namespace: 'social-block-kit',
         version: pkg.version,
         description: pkg.description,
         author: pkg.author,
         icon: '🚫',
-        match: ['https://www.douyin.com/*'],
+        match: [
+          'https://www.douyin.com/*',
+          'https://www.bilibili.com/*',
+          'https://search.bilibili.com/*',
+        ],
       },
       build: {
         externalGlobals: {

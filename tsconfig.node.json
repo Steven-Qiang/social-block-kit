@@ -8,9 +8,9 @@
 
     /* Bundler mode */
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
 
+    "allowImportingTsExtensions": true,
     /* Linting */
     "strict": true,
     "noFallthroughCasesInSwitch": true,

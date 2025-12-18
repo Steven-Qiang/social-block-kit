@@ -1,23 +1,25 @@
 {
-  "name": "douyin-block-kit",
+  "name": "social-block-kit",
   "type": "module",
   "version": "1.0.0",
   "private": true,
-  "description": "基于关键词搜索用户并批量拉黑的抖音油猴脚本",
-  "author": "Steven-Qiang",
   "packageManager": "pnpm@10.24.0",
+  "description": "基于关键词搜索用户并批量拉黑的多平台油猴脚本，支持抖音、哔哩哔哩等",
+  "author": "Steven-Qiang",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Steven-Qiang/douyin-block-kit"
+    "url": "https://github.com/Steven-Qiang/social-block-kit"
   },
   "keywords": [
     "douyin",
+    "bilibili",
     "userscript",
     "tampermonkey",
     "block",
     "automation",
-    "vue"
+    "vue",
+    "social-media"
   ],
   "scripts": {
     "dev": "vite",
