@@ -22,6 +22,7 @@ export default defineConfig({
           'https://www.douyin.com/*',
           'https://www.bilibili.com/*',
           'https://search.bilibili.com/*',
+          'https://account.bilibili.com/account/blacklist*',
         ],
       },
       build: {
