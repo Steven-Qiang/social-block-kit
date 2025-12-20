@@ -24,6 +24,7 @@ export default defineConfig({
           'https://search.bilibili.com/*',
           'https://account.bilibili.com/account/blacklist*',
         ],
+        downloadURL: 'https://github.com/Steven-Qiang/social-block-kit/releases/latest/download/social-block-kit.user.js',
       },
       build: {
         externalGlobals: {
