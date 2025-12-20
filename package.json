@@ -1,7 +1,7 @@
 {
   "name": "social-block-kit",
   "type": "module",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "private": true,
   "packageManager": "pnpm@10.24.0",
   "description": "基于关键词搜索用户并批量拉黑的多平台油猴脚本，支持抖音、哔哩哔哩等",

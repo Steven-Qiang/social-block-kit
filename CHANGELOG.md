@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/Steven-Qiang/social-block-kit/compare/v1.2.1...v1.3.0) (2025-12-20)
+
+
+### Features
+
+* 优化页面功能设计, 新增预设管理功能 ([263433c](https://github.com/Steven-Qiang/social-block-kit/commit/263433c852f955251d2ba5caf4ddd16da6c8e594))
+
 ## [1.2.1](https://github.com/Steven-Qiang/social-block-kit/compare/v1.2.0...v1.2.1) (2025-12-20)
 
 
