@@ -1,11 +1,10 @@
 // ==UserScript==
 // @name         社交平台自动拉黑工具
 // @namespace    social-block-kit
-// @version      1.0.0
+// @version      1.1.0
 // @author       Steven-Qiang
 // @description  基于关键词搜索用户并批量拉黑的多平台油猴脚本，支持抖音、哔哩哔哩等
 // @license      MIT
-// @icon         🚫
 // @source       https://github.com/Steven-Qiang/social-block-kit
 // @match        https://www.douyin.com/*
 // @match        https://www.bilibili.com/*
@@ -17,9 +16,9 @@
 (function (vue) {
   'use strict';
 
-  const d=new Set;const d$1 = async e=>{d.has(e)||(d.add(e),(t=>{typeof GM_addStyle=="function"?GM_addStyle(t):(document.head||document.documentElement).appendChild(document.createElement("style")).append(t);})(e));};
+  const d=new Set;const o = async e=>{d.has(e)||(d.add(e),(t=>{typeof GM_addStyle=="function"?GM_addStyle(t):(document.head||document.documentElement).appendChild(document.createElement("style")).append(t);})(e));};
 
-  d$1(" .panel[data-v-f082b7d2]{position:fixed;width:280px;background:#fff;border-radius:8px;box-shadow:0 2px 12px #00000026;z-index:999999;font-family:Arial,sans-serif}.header[data-v-f082b7d2]{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:12px 16px;border-radius:8px 8px 0 0;font-weight:700;cursor:move;-webkit-user-select:none;user-select:none}.content[data-v-f082b7d2]{padding:16px}.form-group[data-v-f082b7d2]{margin-bottom:12px}label[data-v-f082b7d2]{display:block;margin-bottom:4px;font-size:13px;color:#333}input[type=text][data-v-f082b7d2],input[type=number][data-v-f082b7d2]{width:100%;padding:8px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;font-size:13px}input[data-v-f082b7d2]:disabled{background:#f5f5f5;cursor:not-allowed}button[data-v-f082b7d2]{width:100%;padding:10px;border:none;border-radius:4px;cursor:pointer;font-size:14px;font-weight:700}.btn-start[data-v-f082b7d2]{background:#667eea;color:#fff}.btn-start[data-v-f082b7d2]:disabled{background:#ccc;cursor:not-allowed}.btn-stop[data-v-f082b7d2]{background:#ff5722;color:#fff}.btn-stop[data-v-f082b7d2]:disabled{background:#ccc;cursor:not-allowed}.log-area[data-v-f082b7d2]{padding:10px;background:#f5f5f5;border-radius:4px;font-size:12px;color:#666;min-height:60px;max-height:150px;overflow-y:auto}.log-empty[data-v-f082b7d2]{color:#999}.log-item[data-v-f082b7d2]{margin-bottom:4px}.counter[data-v-f082b7d2]{margin-top:8px;font-size:12px;color:#999;text-align:center}.count[data-v-f082b7d2]{color:#667eea;font-weight:700} ");
+  o(" .panel[data-v-8c0b1694]{position:fixed;width:280px;background:#fff;border-radius:8px;box-shadow:0 2px 12px #00000026;z-index:999999;font-family:Arial,sans-serif}.header[data-v-8c0b1694]{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:12px 16px;border-radius:8px 8px 0 0;font-weight:700;cursor:move;-webkit-user-select:none;user-select:none}.content[data-v-8c0b1694]{padding:16px}.form-group[data-v-8c0b1694]{margin-bottom:12px}label[data-v-8c0b1694]{display:block;margin-bottom:4px;font-size:13px;color:#333}input[type=text][data-v-8c0b1694],input[type=number][data-v-8c0b1694]{width:100%;padding:8px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;font-size:13px}.checkbox-label[data-v-8c0b1694]{display:flex;align-items:center;font-size:13px;color:#333;cursor:pointer}.checkbox-label input[type=checkbox][data-v-8c0b1694]{width:auto;margin-right:6px}input[data-v-8c0b1694]:disabled{background:#f5f5f5;cursor:not-allowed}button[data-v-8c0b1694]{width:100%;padding:10px;border:none;border-radius:4px;cursor:pointer;font-size:14px;font-weight:700}.btn-start[data-v-8c0b1694]{background:#667eea;color:#fff}.btn-start[data-v-8c0b1694]:disabled{background:#ccc;cursor:not-allowed}.btn-stop[data-v-8c0b1694]{background:#ff5722;color:#fff}.btn-stop[data-v-8c0b1694]:disabled{background:#ccc;cursor:not-allowed}.log-area[data-v-8c0b1694]{padding:10px;background:#f5f5f5;border-radius:4px;font-size:12px;color:#666;min-height:60px;max-height:150px;overflow-y:auto}.log-empty[data-v-8c0b1694]{color:#999}.log-item[data-v-8c0b1694]{margin-bottom:4px}.counter[data-v-8c0b1694]{margin-top:8px;font-size:12px;color:#999;text-align:center}.count[data-v-8c0b1694]{color:#667eea;font-weight:700} ");
 
   class BilibiliPlatform {
     name = "bilibili";
@@ -73,7 +72,8 @@
             nickname: item.uname,
             uid: item.mid.toString(),
             avatar: item.upic,
-            is_blocked: this.isBlocked(item.mid.toString())
+            is_blocked: this.isBlocked(item.mid.toString()),
+            official_verify: !!item.official_verify?.desc
           }
         })),
         hasMore: users.length >= 20
@@ -156,17 +156,23 @@
   const _hoisted_3 = ["disabled"];
   const _hoisted_4 = { class: "form-group" };
   const _hoisted_5 = ["disabled"];
-  const _hoisted_6 = { class: "form-group" };
-  const _hoisted_7 = ["disabled"];
-  const _hoisted_8 = { class: "form-group" };
-  const _hoisted_9 = ["disabled"];
-  const _hoisted_10 = { class: "log-area" };
-  const _hoisted_11 = {
+  const _hoisted_6 = {
+    key: 0,
+    class: "form-group"
+  };
+  const _hoisted_7 = { class: "checkbox-label" };
+  const _hoisted_8 = ["disabled"];
+  const _hoisted_9 = { class: "form-group" };
+  const _hoisted_10 = ["disabled"];
+  const _hoisted_11 = { class: "form-group" };
+  const _hoisted_12 = ["disabled"];
+  const _hoisted_13 = { class: "log-area" };
+  const _hoisted_14 = {
     key: 0,
     class: "log-empty"
   };
-  const _hoisted_12 = { class: "counter" };
-  const _hoisted_13 = { class: "count" };
+  const _hoisted_15 = { class: "counter" };
+  const _hoisted_16 = { class: "count" };
   const delay = 1e3;
   const _sfc_main = vue.defineComponent({
     __name: "App",
@@ -178,6 +184,7 @@
       const blockedCount = vue.ref(0);
       const logs = vue.ref([]);
       const currentPlatform = getCurrentPlatform();
+      const onlyVerified = vue.ref(true);
       function addLog(msg, color = "#333") {
         const time = ( new Date()).toLocaleTimeString();
         logs.value.push({ msg, color, time });
@@ -215,6 +222,10 @@
             const isBlocked = currentPlatform.name === "douyin" ? item.user_info.user_tags?.some((tag) => tag.type === "blocked_label") : item.user_info.is_blocked;
             if (isBlocked) {
               addLog(`已拉黑：${user.nickname}（跳过）`, "#999");
+              continue;
+            }
+            if (onlyVerified.value && currentPlatform.name === "bilibili" && !item.user_info.official_verify) {
+              addLog(`非认证用户：${user.nickname}（跳过）`, "#999");
               continue;
             }
             if (await currentPlatform.blockUser(user)) {
@@ -275,7 +286,7 @@
           }, " 🚫 " + vue.toDisplayString(vue.unref(currentPlatform)?.displayName || "多平台") + "自动拉黑工具 ", 33),
           vue.createElementVNode("div", _hoisted_1, [
             vue.createElementVNode("div", _hoisted_2, [
-              _cache[2] || (_cache[2] = vue.createElementVNode("label", null, "搜索关键词：", -1)),
+              _cache[3] || (_cache[3] = vue.createElementVNode("label", null, "搜索关键词：", -1)),
               vue.withDirectives(vue.createElementVNode("input", {
                 "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => keyword.value = $event),
                 type: "text",
@@ -286,7 +297,7 @@
               ])
             ]),
             vue.createElementVNode("div", _hoisted_4, [
-              _cache[3] || (_cache[3] = vue.createElementVNode("label", null, "拉黑数量：", -1)),
+              _cache[4] || (_cache[4] = vue.createElementVNode("label", null, "拉黑数量：", -1)),
               vue.withDirectives(vue.createElementVNode("input", {
                 "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => limit.value = $event),
                 type: "number",
@@ -302,22 +313,34 @@
                 ]
               ])
             ]),
-            vue.createElementVNode("div", _hoisted_6, [
+            vue.unref(currentPlatform)?.name === "bilibili" ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_6, [
+              vue.createElementVNode("label", _hoisted_7, [
+                vue.withDirectives(vue.createElementVNode("input", {
+                  "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => onlyVerified.value = $event),
+                  type: "checkbox",
+                  disabled: isRunning.value
+                }, null, 8, _hoisted_8), [
+                  [vue.vModelCheckbox, onlyVerified.value]
+                ]),
+                _cache[5] || (_cache[5] = vue.createTextVNode(" 只拉黑认证用户 ", -1))
+              ])
+            ])) : vue.createCommentVNode("", true),
+            vue.createElementVNode("div", _hoisted_9, [
               vue.createElementVNode("button", {
                 class: "btn-start",
                 disabled: isRunning.value,
                 onClick: startTask
-              }, " 开始拉黑 ", 8, _hoisted_7)
+              }, " 开始拉黑 ", 8, _hoisted_10)
             ]),
-            vue.createElementVNode("div", _hoisted_8, [
+            vue.createElementVNode("div", _hoisted_11, [
               vue.createElementVNode("button", {
                 class: "btn-stop",
                 disabled: !isRunning.value,
                 onClick: stopTask
-              }, " 停止任务 ", 8, _hoisted_9)
+              }, " 停止任务 ", 8, _hoisted_12)
             ]),
-            vue.createElementVNode("div", _hoisted_10, [
-              logs.value.length === 0 ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_11, " 等待开始... ")) : vue.createCommentVNode("", true),
+            vue.createElementVNode("div", _hoisted_13, [
+              logs.value.length === 0 ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_14, " 等待开始... ")) : vue.createCommentVNode("", true),
               (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(logs.value, (log, i) => {
                 return vue.openBlock(), vue.createElementBlock("div", {
                   key: i,
@@ -326,9 +349,9 @@
                 }, " [" + vue.toDisplayString(log.time) + "] " + vue.toDisplayString(log.msg), 5);
               }), 128))
             ]),
-            vue.createElementVNode("div", _hoisted_12, [
-              _cache[4] || (_cache[4] = vue.createTextVNode(" 已拉黑：", -1)),
-              vue.createElementVNode("span", _hoisted_13, vue.toDisplayString(blockedCount.value), 1),
+            vue.createElementVNode("div", _hoisted_15, [
+              _cache[6] || (_cache[6] = vue.createTextVNode(" 已拉黑：", -1)),
+              vue.createElementVNode("span", _hoisted_16, vue.toDisplayString(blockedCount.value), 1),
               vue.createTextVNode(" / " + vue.toDisplayString(limit.value), 1)
             ])
           ])
@@ -343,7 +366,7 @@
     }
     return target;
   };
-  const App = _export_sfc(_sfc_main, [["__scopeId", "data-v-f082b7d2"]]);
+  const App = _export_sfc(_sfc_main, [["__scopeId", "data-v-8c0b1694"]]);
   const app = document.createElement("div");
   document.body.append(app);
   vue.createApp(App).mount(app);

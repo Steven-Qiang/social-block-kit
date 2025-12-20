@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/Steven-Qiang/social-block-kit/compare/v1.1.0...v1.1.1) (2025-12-20)
+
+
+### Bug Fixes
+
+* bilibili新增之拉黑已认证用户 ([583dcc4](https://github.com/Steven-Qiang/social-block-kit/commit/583dcc486cd4ae535392781a2ac7387e9d546d95))
+
 # [1.1.0](https://github.com/Steven-Qiang/social-block-kit/compare/v1.0.0...v1.1.0) (2025-12-18)
 
 
