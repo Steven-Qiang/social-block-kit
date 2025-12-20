@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         社交平台自动拉黑工具
 // @namespace    social-block-kit
-// @version      1.1.0
+// @version      1.1.1
 // @author       Steven-Qiang
 // @description  基于关键词搜索用户并批量拉黑的多平台油猴脚本，支持抖音、哔哩哔哩等
 // @license      MIT
@@ -9,6 +9,7 @@
 // @match        https://www.douyin.com/*
 // @match        https://www.bilibili.com/*
 // @match        https://search.bilibili.com/*
+// @match        https://account.bilibili.com/account/blacklist*
 // @require      https://cdn.jsdelivr.net/npm/vue@3.5.25/dist/vue.global.prod.js
 // @grant        GM_addStyle
 // ==/UserScript==
@@ -16,10 +17,138 @@
 (function (vue) {
   'use strict';
 
-  const d=new Set;const o = async e=>{d.has(e)||(d.add(e),(t=>{typeof GM_addStyle=="function"?GM_addStyle(t):(document.head||document.documentElement).appendChild(document.createElement("style")).append(t);})(e));};
+  const d=new Set;const a = async e=>{d.has(e)||(d.add(e),(t=>{typeof GM_addStyle=="function"?GM_addStyle(t):(document.head||document.documentElement).appendChild(document.createElement("style")).append(t);})(e));};
 
-  o(" .panel[data-v-8c0b1694]{position:fixed;width:280px;background:#fff;border-radius:8px;box-shadow:0 2px 12px #00000026;z-index:999999;font-family:Arial,sans-serif}.header[data-v-8c0b1694]{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:12px 16px;border-radius:8px 8px 0 0;font-weight:700;cursor:move;-webkit-user-select:none;user-select:none}.content[data-v-8c0b1694]{padding:16px}.form-group[data-v-8c0b1694]{margin-bottom:12px}label[data-v-8c0b1694]{display:block;margin-bottom:4px;font-size:13px;color:#333}input[type=text][data-v-8c0b1694],input[type=number][data-v-8c0b1694]{width:100%;padding:8px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;font-size:13px}.checkbox-label[data-v-8c0b1694]{display:flex;align-items:center;font-size:13px;color:#333;cursor:pointer}.checkbox-label input[type=checkbox][data-v-8c0b1694]{width:auto;margin-right:6px}input[data-v-8c0b1694]:disabled{background:#f5f5f5;cursor:not-allowed}button[data-v-8c0b1694]{width:100%;padding:10px;border:none;border-radius:4px;cursor:pointer;font-size:14px;font-weight:700}.btn-start[data-v-8c0b1694]{background:#667eea;color:#fff}.btn-start[data-v-8c0b1694]:disabled{background:#ccc;cursor:not-allowed}.btn-stop[data-v-8c0b1694]{background:#ff5722;color:#fff}.btn-stop[data-v-8c0b1694]:disabled{background:#ccc;cursor:not-allowed}.log-area[data-v-8c0b1694]{padding:10px;background:#f5f5f5;border-radius:4px;font-size:12px;color:#666;min-height:60px;max-height:150px;overflow-y:auto}.log-empty[data-v-8c0b1694]{color:#999}.log-item[data-v-8c0b1694]{margin-bottom:4px}.counter[data-v-8c0b1694]{margin-top:8px;font-size:12px;color:#999;text-align:center}.count[data-v-8c0b1694]{color:#667eea;font-weight:700} ");
+  a(" .content[data-v-3bb2307e]{padding:16px}.form-group[data-v-3bb2307e]{margin-bottom:12px}button[data-v-3bb2307e]{width:100%;padding:10px;border:none;border-radius:4px;cursor:pointer;font-size:14px;font-weight:700}.btn-start[data-v-3bb2307e]{background:#ff5722;color:#fff}.btn-start[data-v-3bb2307e]:disabled{background:#ccc;cursor:not-allowed}.btn-stop[data-v-3bb2307e]{background:#666;color:#fff}.btn-stop[data-v-3bb2307e]:disabled{background:#ccc;cursor:not-allowed}.log-area[data-v-3bb2307e]{padding:10px;background:#f5f5f5;border-radius:4px;font-size:12px;color:#666;min-height:60px;max-height:150px;overflow-y:auto}.log-empty[data-v-3bb2307e]{color:#999}.log-item[data-v-3bb2307e]{margin-bottom:4px}.counter[data-v-3bb2307e]{margin-top:8px;font-size:12px;color:#999;text-align:center}.count[data-v-3bb2307e]{color:#ff5722;font-weight:700}.content[data-v-462b0afb]{padding:16px}.form-group[data-v-462b0afb]{margin-bottom:12px}label[data-v-462b0afb]{display:block;margin-bottom:4px;font-size:13px;color:#333}input[type=text][data-v-462b0afb],input[type=number][data-v-462b0afb]{width:100%;padding:8px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;font-size:13px}.checkbox-label[data-v-462b0afb]{display:flex;align-items:center;font-size:13px;color:#333;cursor:pointer}.checkbox-label input[type=checkbox][data-v-462b0afb]{width:auto;margin-right:6px}input[data-v-462b0afb]:disabled{background:#f5f5f5;cursor:not-allowed}button[data-v-462b0afb]{width:100%;padding:10px;border:none;border-radius:4px;cursor:pointer;font-size:14px;font-weight:700}.btn-start[data-v-462b0afb]{background:#667eea;color:#fff}.btn-start[data-v-462b0afb]:disabled{background:#ccc;cursor:not-allowed}.btn-stop[data-v-462b0afb]{background:#ff5722;color:#fff}.btn-stop[data-v-462b0afb]:disabled{background:#ccc;cursor:not-allowed}.log-area[data-v-462b0afb]{padding:10px;background:#f5f5f5;border-radius:4px;font-size:12px;color:#666;min-height:60px;max-height:150px;overflow-y:auto}.log-empty[data-v-462b0afb]{color:#999}.log-item[data-v-462b0afb]{margin-bottom:4px}.counter[data-v-462b0afb]{margin-top:8px;font-size:12px;color:#999;text-align:center}.count[data-v-462b0afb]{color:#667eea;font-weight:700}.panel[data-v-c495fe43]{position:fixed;width:280px;background:#fff;border-radius:8px;box-shadow:0 2px 12px #00000026;z-index:999999;font-family:Arial,sans-serif}.header[data-v-c495fe43]{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:12px 16px;border-radius:8px 8px 0 0;font-weight:700;cursor:move;-webkit-user-select:none;user-select:none}.guide[data-v-c495fe43]{padding:8px 16px;border-top:1px solid #eee}.guide-link[data-v-c495fe43]{display:block;text-align:center;color:#667eea;text-decoration:none;font-size:13px;padding:6px;border-radius:4px;transition:background-color .2s}.guide-link[data-v-c495fe43]:hover{background-color:#f5f5f5} ");
 
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  const _hoisted_1$2 = { class: "content" };
+  const _hoisted_2$1 = { class: "form-group" };
+  const _hoisted_3$1 = ["disabled"];
+  const _hoisted_4$1 = { class: "form-group" };
+  const _hoisted_5$1 = ["disabled"];
+  const _hoisted_6$1 = { class: "log-area" };
+  const _hoisted_7$1 = {
+    key: 0,
+    class: "log-empty"
+  };
+  const _hoisted_8$1 = { class: "counter" };
+  const _hoisted_9$1 = { class: "count" };
+  const _sfc_main$2 = vue.defineComponent({
+    __name: "BlacklistCleaner",
+    setup(__props) {
+      const isRunning = vue.ref(false);
+      const isStopped = vue.ref(false);
+      const removedCount = vue.ref(0);
+      const logs = vue.ref([]);
+      function addLog(msg, color = "#333") {
+        const time = ( new Date()).toLocaleTimeString();
+        logs.value.push({ msg, color, time });
+      }
+      async function startCleanup() {
+        isRunning.value = true;
+        isStopped.value = false;
+        removedCount.value = 0;
+        logs.value = [];
+        addLog("开始清理黑名单...", "#667eea");
+        let page = 1;
+        let totalRemoved = 0;
+        while (!isStopped.value) {
+          const res = await fetch(`https://api.bilibili.com/x/relation/blacks?re_version=0&pn=${page}&ps=50&jsonp=jsonp&web_location=333.33`, {
+            credentials: "include"
+          });
+          const data = await res.json();
+          const list = data.data?.list || [];
+          if (list.length === 0) {
+            addLog("黑名单已清空", "#4caf50");
+            break;
+          }
+          addLog(`处理第 ${page} 页，共 ${list.length} 个用户`, "#2196F3");
+          for (const item of list) {
+            if (isStopped.value)
+              break;
+            if (await removeFromBlacklist(item.mid)) {
+              totalRemoved++;
+              removedCount.value = totalRemoved;
+              addLog(`✅ 移除成功：${item.uname}`, "#4caf50");
+            } else {
+              addLog(`❌ 移除失败：${item.uname}`, "#ff5722");
+            }
+            await sleep(500);
+          }
+          page++;
+          await sleep(1e3);
+        }
+        addLog(`清理完成！共移除 ${totalRemoved} 个用户`, "#667eea");
+        isRunning.value = false;
+      }
+      async function removeFromBlacklist(uid) {
+        const csrf = getCsrfToken();
+        if (!csrf)
+          return false;
+        const body = `fid=${uid}&act=6&re_src=11&csrf=${csrf}`;
+        const res = await fetch("https://api.bilibili.com/x/relation/modify", {
+          method: "POST",
+          headers: {
+            "content-type": "application/x-www-form-urlencoded"
+          },
+          body,
+          credentials: "include"
+        });
+        const data = await res.json();
+        return data.code === 0;
+      }
+      function getCsrfToken() {
+        const match = document.cookie.match(/bili_jct=([^;]+)/);
+        return match ? match[1] : null;
+      }
+      function stopCleanup() {
+        isStopped.value = true;
+        addLog("清理已停止", "#ff5722");
+      }
+      return (_ctx, _cache) => {
+        return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$2, [
+          vue.createElementVNode("div", _hoisted_2$1, [
+            vue.createElementVNode("button", {
+              class: "btn-start",
+              disabled: isRunning.value,
+              onClick: startCleanup
+            }, " 开始清理黑名单 ", 8, _hoisted_3$1)
+          ]),
+          vue.createElementVNode("div", _hoisted_4$1, [
+            vue.createElementVNode("button", {
+              class: "btn-stop",
+              disabled: !isRunning.value,
+              onClick: stopCleanup
+            }, " 停止清理 ", 8, _hoisted_5$1)
+          ]),
+          vue.createElementVNode("div", _hoisted_6$1, [
+            logs.value.length === 0 ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_7$1, " 等待开始... ")) : vue.createCommentVNode("", true),
+            (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(logs.value, (log, i) => {
+              return vue.openBlock(), vue.createElementBlock("div", {
+                key: i,
+                class: "log-item",
+                style: vue.normalizeStyle({ color: log.color })
+              }, " [" + vue.toDisplayString(log.time) + "] " + vue.toDisplayString(log.msg), 5);
+            }), 128))
+          ]),
+          vue.createElementVNode("div", _hoisted_8$1, [
+            _cache[0] || (_cache[0] = vue.createTextVNode(" 已移除：", -1)),
+            vue.createElementVNode("span", _hoisted_9$1, vue.toDisplayString(removedCount.value), 1),
+            _cache[1] || (_cache[1] = vue.createTextVNode(" 个用户 ", -1))
+          ])
+        ]);
+      };
+    }
+  });
+  const _export_sfc = (sfc, props) => {
+    const target = sfc.__vccOpts || sfc;
+    for (const [key, val] of props) {
+      target[key] = val;
+    }
+    return target;
+  };
+  const BlacklistCleaner = _export_sfc(_sfc_main$2, [["__scopeId", "data-v-3bb2307e"]]);
   class BilibiliPlatform {
     name = "bilibili";
     displayName = "哔哩哔哩";
@@ -150,8 +279,7 @@
   function getCurrentPlatform() {
     return platforms.find((platform) => platform.isCurrentPlatform()) || null;
   }
-  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-  const _hoisted_1 = { class: "content" };
+  const _hoisted_1$1 = { class: "content" };
   const _hoisted_2 = { class: "form-group" };
   const _hoisted_3 = ["disabled"];
   const _hoisted_4 = { class: "form-group" };
@@ -174,8 +302,8 @@
   const _hoisted_15 = { class: "counter" };
   const _hoisted_16 = { class: "count" };
   const delay = 1e3;
-  const _sfc_main = vue.defineComponent({
-    __name: "App",
+  const _sfc_main$1 = vue.defineComponent({
+    __name: "BlockingTool",
     setup(__props) {
       const keyword = vue.ref("");
       const limit = vue.ref(10);
@@ -184,7 +312,7 @@
       const blockedCount = vue.ref(0);
       const logs = vue.ref([]);
       const currentPlatform = getCurrentPlatform();
-      const onlyVerified = vue.ref(true);
+      const onlyVerified = vue.ref(false);
       function addLog(msg, color = "#333") {
         const time = ( new Date()).toLocaleTimeString();
         logs.value.push({ msg, color, time });
@@ -248,6 +376,93 @@
         isStopped.value = true;
         addLog("任务已停止", "#ff5722");
       }
+      return (_ctx, _cache) => {
+        return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$1, [
+          vue.createElementVNode("div", _hoisted_2, [
+            _cache[3] || (_cache[3] = vue.createElementVNode("label", null, "搜索关键词：", -1)),
+            vue.withDirectives(vue.createElementVNode("input", {
+              "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => keyword.value = $event),
+              type: "text",
+              placeholder: "例如：新闻",
+              disabled: isRunning.value
+            }, null, 8, _hoisted_3), [
+              [vue.vModelText, keyword.value]
+            ])
+          ]),
+          vue.createElementVNode("div", _hoisted_4, [
+            _cache[4] || (_cache[4] = vue.createElementVNode("label", null, "拉黑数量：", -1)),
+            vue.withDirectives(vue.createElementVNode("input", {
+              "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => limit.value = $event),
+              type: "number",
+              min: "1",
+              max: "50",
+              disabled: isRunning.value
+            }, null, 8, _hoisted_5), [
+              [
+                vue.vModelText,
+                limit.value,
+                void 0,
+                { number: true }
+              ]
+            ])
+          ]),
+          vue.unref(currentPlatform)?.name === "bilibili" ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_6, [
+            vue.createElementVNode("label", _hoisted_7, [
+              vue.withDirectives(vue.createElementVNode("input", {
+                "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => onlyVerified.value = $event),
+                type: "checkbox",
+                disabled: isRunning.value
+              }, null, 8, _hoisted_8), [
+                [vue.vModelCheckbox, onlyVerified.value]
+              ]),
+              _cache[5] || (_cache[5] = vue.createTextVNode(" 只拉黑认证用户 ", -1))
+            ])
+          ])) : vue.createCommentVNode("", true),
+          vue.createElementVNode("div", _hoisted_9, [
+            vue.createElementVNode("button", {
+              class: "btn-start",
+              disabled: isRunning.value,
+              onClick: startTask
+            }, " 开始拉黑 ", 8, _hoisted_10)
+          ]),
+          vue.createElementVNode("div", _hoisted_11, [
+            vue.createElementVNode("button", {
+              class: "btn-stop",
+              disabled: !isRunning.value,
+              onClick: stopTask
+            }, " 停止任务 ", 8, _hoisted_12)
+          ]),
+          vue.createElementVNode("div", _hoisted_13, [
+            logs.value.length === 0 ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_14, " 等待开始... ")) : vue.createCommentVNode("", true),
+            (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(logs.value, (log, i) => {
+              return vue.openBlock(), vue.createElementBlock("div", {
+                key: i,
+                class: "log-item",
+                style: vue.normalizeStyle({ color: log.color })
+              }, " [" + vue.toDisplayString(log.time) + "] " + vue.toDisplayString(log.msg), 5);
+            }), 128))
+          ]),
+          vue.createElementVNode("div", _hoisted_15, [
+            _cache[6] || (_cache[6] = vue.createTextVNode(" 已拉黑：", -1)),
+            vue.createElementVNode("span", _hoisted_16, vue.toDisplayString(blockedCount.value), 1),
+            vue.createTextVNode(" / " + vue.toDisplayString(limit.value), 1)
+          ])
+        ]);
+      };
+    }
+  });
+  const BlockingTool = _export_sfc(_sfc_main$1, [["__scopeId", "data-v-462b0afb"]]);
+  const _hoisted_1 = {
+    key: 2,
+    class: "guide"
+  };
+  const _sfc_main = vue.defineComponent({
+    __name: "App",
+    setup(__props) {
+      const currentPlatform = getCurrentPlatform();
+      const isBlacklistPage = vue.computed(
+        () => window.location.href.includes("account.bilibili.com/account/blacklist")
+      );
       const isDragging = vue.ref(false);
       const startX = vue.ref(0);
       const startY = vue.ref(0);
@@ -283,90 +498,20 @@
           vue.createElementVNode("div", {
             class: "header",
             onMousedown: handleMouseDown
-          }, " 🚫 " + vue.toDisplayString(vue.unref(currentPlatform)?.displayName || "多平台") + "自动拉黑工具 ", 33),
-          vue.createElementVNode("div", _hoisted_1, [
-            vue.createElementVNode("div", _hoisted_2, [
-              _cache[3] || (_cache[3] = vue.createElementVNode("label", null, "搜索关键词：", -1)),
-              vue.withDirectives(vue.createElementVNode("input", {
-                "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => keyword.value = $event),
-                type: "text",
-                placeholder: "例如：新闻",
-                disabled: isRunning.value
-              }, null, 8, _hoisted_3), [
-                [vue.vModelText, keyword.value]
-              ])
-            ]),
-            vue.createElementVNode("div", _hoisted_4, [
-              _cache[4] || (_cache[4] = vue.createElementVNode("label", null, "拉黑数量：", -1)),
-              vue.withDirectives(vue.createElementVNode("input", {
-                "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => limit.value = $event),
-                type: "number",
-                min: "1",
-                max: "50",
-                disabled: isRunning.value
-              }, null, 8, _hoisted_5), [
-                [
-                  vue.vModelText,
-                  limit.value,
-                  void 0,
-                  { number: true }
-                ]
-              ])
-            ]),
-            vue.unref(currentPlatform)?.name === "bilibili" ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_6, [
-              vue.createElementVNode("label", _hoisted_7, [
-                vue.withDirectives(vue.createElementVNode("input", {
-                  "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => onlyVerified.value = $event),
-                  type: "checkbox",
-                  disabled: isRunning.value
-                }, null, 8, _hoisted_8), [
-                  [vue.vModelCheckbox, onlyVerified.value]
-                ]),
-                _cache[5] || (_cache[5] = vue.createTextVNode(" 只拉黑认证用户 ", -1))
-              ])
-            ])) : vue.createCommentVNode("", true),
-            vue.createElementVNode("div", _hoisted_9, [
-              vue.createElementVNode("button", {
-                class: "btn-start",
-                disabled: isRunning.value,
-                onClick: startTask
-              }, " 开始拉黑 ", 8, _hoisted_10)
-            ]),
-            vue.createElementVNode("div", _hoisted_11, [
-              vue.createElementVNode("button", {
-                class: "btn-stop",
-                disabled: !isRunning.value,
-                onClick: stopTask
-              }, " 停止任务 ", 8, _hoisted_12)
-            ]),
-            vue.createElementVNode("div", _hoisted_13, [
-              logs.value.length === 0 ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_14, " 等待开始... ")) : vue.createCommentVNode("", true),
-              (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(logs.value, (log, i) => {
-                return vue.openBlock(), vue.createElementBlock("div", {
-                  key: i,
-                  class: "log-item",
-                  style: vue.normalizeStyle({ color: log.color })
-                }, " [" + vue.toDisplayString(log.time) + "] " + vue.toDisplayString(log.msg), 5);
-              }), 128))
-            ]),
-            vue.createElementVNode("div", _hoisted_15, [
-              _cache[6] || (_cache[6] = vue.createTextVNode(" 已拉黑：", -1)),
-              vue.createElementVNode("span", _hoisted_16, vue.toDisplayString(blockedCount.value), 1),
-              vue.createTextVNode(" / " + vue.toDisplayString(limit.value), 1)
-            ])
-          ])
+          }, vue.toDisplayString(isBlacklistPage.value ? "🗑️ 黑名单清理工具" : `🚫 ${vue.unref(currentPlatform)?.displayName || "多平台"}自动拉黑工具`), 33),
+          isBlacklistPage.value ? (vue.openBlock(), vue.createBlock(BlacklistCleaner, { key: 0 })) : (vue.openBlock(), vue.createBlock(BlockingTool, { key: 1 })),
+          vue.unref(currentPlatform)?.name === "bilibili" && !isBlacklistPage.value ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1, [..._cache[0] || (_cache[0] = [
+            vue.createElementVNode("a", {
+              href: "https://account.bilibili.com/account/blacklist",
+              target: "_blank",
+              class: "guide-link"
+            }, " 🗑️ 清理黑名单 ", -1)
+          ])])) : vue.createCommentVNode("", true)
         ], 4);
       };
     }
   });
-  const _export_sfc = (sfc, props) => {
-    const target = sfc.__vccOpts || sfc;
-    for (const [key, val] of props) {
-      target[key] = val;
-    }
-    return target;
-  };
-  const App = _export_sfc(_sfc_main, [["__scopeId", "data-v-8c0b1694"]]);
+  const App = _export_sfc(_sfc_main, [["__scopeId", "data-v-c495fe43"]]);
   const app = document.createElement("div");
   document.body.append(app);
   vue.createApp(App).mount(app);
