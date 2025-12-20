@@ -1,11 +1,12 @@
 // ==UserScript==
 // @name         社交平台自动拉黑工具
 // @namespace    social-block-kit
-// @version      1.1.1
+// @version      1.2.1
 // @author       Steven-Qiang
 // @description  基于关键词搜索用户并批量拉黑的多平台油猴脚本，支持抖音、哔哩哔哩等
 // @license      MIT
 // @source       https://github.com/Steven-Qiang/social-block-kit
+// @downloadURL  https://github.com/Steven-Qiang/social-block-kit/releases/latest/download/social-block-kit.user.js
 // @match        https://www.douyin.com/*
 // @match        https://www.bilibili.com/*
 // @match        https://search.bilibili.com/*

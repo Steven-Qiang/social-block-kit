@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/Steven-Qiang/social-block-kit/compare/v1.2.0...v1.2.1) (2025-12-20)
+
+
+### Bug Fixes
+
+* 修复发布脚本 ([d6c897a](https://github.com/Steven-Qiang/social-block-kit/commit/d6c897acd740239f31ea26cd1d4a290f4a85d3d2))
+
 # [1.2.0](https://github.com/Steven-Qiang/social-block-kit/compare/v1.1.1...v1.2.0) (2025-12-20)
 
 
