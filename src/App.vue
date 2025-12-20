@@ -11,6 +11,7 @@ const isStopped = ref(false)
 const blockedCount = ref(0)
 const logs = ref<Array<{ msg: string, color: string, time: string }>>([])
 const currentPlatform = getCurrentPlatform()
+const onlyVerified = ref(true)
 
 const delay = 1000
 
@@ -59,12 +60,17 @@ async function startTask() {
         sec_uid: item.user_info.sec_uid,
       }
 
-      const isBlocked = currentPlatform.name === 'douyin' 
+      const isBlocked = currentPlatform.name === 'douyin'
         ? item.user_info.user_tags?.some((tag: any) => tag.type === 'blocked_label')
         : item.user_info.is_blocked
-      
+
       if (isBlocked) {
         addLog(`已拉黑：${user.nickname}（跳过）`, '#999')
+        continue
+      }
+
+      if (onlyVerified.value && currentPlatform.name === 'bilibili' && !item.user_info.official_verify) {
+        addLog(`非认证用户：${user.nickname}（跳过）`, '#999')
         continue
       }
 
@@ -145,6 +151,12 @@ onUnmounted(() => {
         <label>拉黑数量：</label>
         <input v-model.number="limit" type="number" min="1" max="50" :disabled="isRunning">
       </div>
+      <div v-if="currentPlatform?.name === 'bilibili'" class="form-group">
+        <label class="checkbox-label">
+          <input v-model="onlyVerified" type="checkbox" :disabled="isRunning">
+          只拉黑认证用户
+        </label>
+      </div>
       <div class="form-group">
         <button class="btn-start" :disabled="isRunning" @click="startTask">
           开始拉黑
@@ -214,6 +226,19 @@ input[type="number"] {
   border-radius: 4px;
   box-sizing: border-box;
   font-size: 13px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  color: #333;
+  cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: auto;
+  margin-right: 6px;
 }
 
 input:disabled {

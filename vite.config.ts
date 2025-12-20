@@ -18,7 +18,6 @@ export default defineConfig({
         version: pkg.version,
         description: pkg.description,
         author: pkg.author,
-        icon: '🚫',
         match: [
           'https://www.douyin.com/*',
           'https://www.bilibili.com/*',

@@ -64,6 +64,7 @@ export class BilibiliPlatform implements Platform {
           uid: item.mid.toString(),
           avatar: item.upic,
           is_blocked: this.isBlocked(item.mid.toString()),
+          official_verify: !!item.official_verify?.desc,
         },
       })),
       hasMore: users.length >= 20,
