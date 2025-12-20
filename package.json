@@ -30,20 +30,22 @@
     "release": "semantic-release"
   },
   "dependencies": {
-    "vue": "^3.5.19"
+    "vue": "^3.5.26"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^6.2.0",
+    "@antfu/eslint-config": "^6.7.1",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/exec": "^7.1.0",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^12.0.2",
-    "@vitejs/plugin-vue": "^6.0.1",
-    "eslint": "^9.39.1",
+    "@vitejs/plugin-vue": "^6.0.3",
+    "eslint": "^9.39.2",
+    "eslint-plugin-format": "^1.1.0",
     "semantic-release": "^25.0.2",
-    "typescript": "^5.9.2",
-    "vite": "^7.1.3",
-    "vite-plugin-monkey": "^7.1.1",
-    "vue-tsc": "^3.0.6"
+    "typescript": "^5.9.3",
+    "unplugin-auto-import": "^20.3.0",
+    "vite": "^7.3.0",
+    "vite-plugin-monkey": "^7.1.8",
+    "vue-tsc": "^3.1.8"
   }
 }

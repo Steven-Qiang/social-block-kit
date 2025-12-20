@@ -1,7 +1,8 @@
-import vue from '@vitejs/plugin-vue'
-import { defineConfig } from 'vite'
-import monkey, { cdn } from 'vite-plugin-monkey'
-import pkg from './package.json'
+import vue from '@vitejs/plugin-vue';
+import AutoImport from 'unplugin-auto-import/vite';
+import { defineConfig } from 'vite';
+import monkey, { cdn, util } from 'vite-plugin-monkey';
+import pkg from './package.json';
 
 export default defineConfig({
   server: {
@@ -9,6 +10,9 @@ export default defineConfig({
     cors: true,
   },
   plugins: [
+    AutoImport({
+      imports: [util.unimportPreset],
+    }),
     vue(),
     monkey({
       entry: 'src/main.ts',
@@ -18,6 +22,10 @@ export default defineConfig({
         version: pkg.version,
         description: pkg.description,
         author: pkg.author,
+        grant: [
+          'GM_getValue',
+          'GM_setValue'
+        ],
         match: [
           'https://www.douyin.com/*',
           'https://www.bilibili.com/*',
@@ -33,4 +41,4 @@ export default defineConfig({
       },
     }),
   ],
-})
+});

@@ -7,9 +7,13 @@
 [![Version](https://img.shields.io/github/package-json/v/Steven-Qiang/social-block-kit)](./package.json)
 
 <div align="center">
-  <img src="./assets/screenshot.png" width="30%" alt="功能截图1" />
-  <img src="./assets/screenshot2.png" width="30%" alt="功能截图2" />
-  <img src="./assets/screenshot3.png" width="30%" alt="功能截图3" />
+  <img src="https://github.com/Steven-Qiang/social-block-kit/blob/main/assets/screenshot.douyin.png?raw=true" width="45%" alt="抖音拉黑界面" />
+  <img src="https://github.com/Steven-Qiang/social-block-kit/blob/main/assets/screenshot.bilibili.png?raw=true" width="45%" alt="B站拉黑界面" />
+</div>
+
+<div align="center">
+  <img src="https://github.com/Steven-Qiang/social-block-kit/blob/main/assets/screenshot.template.png?raw=true" width="45%" alt="预设管理界面" />
+  <img src="https://github.com/Steven-Qiang/social-block-kit/blob/main/assets/screenshot.block-cleaner.png?raw=true" width="45%" alt="黑名单清理界面" />
 </div>
 
 ## 特性
@@ -23,6 +27,9 @@
 - ✅ 过滤认证用户（仅B站）
 - 🌐 多平台支持（抖音、哔哩哔哩）
 - 🎨 自适应界面
+- 🤝 社区预设模板
+- 📋 预设管理功能
+
 ## 支持平台
 
 - ✅ [抖音网页版](https://www.douyin.com)
@@ -38,6 +45,7 @@
 ## 使用
 
 ### 批量拉黑
+
 1. 登录对应平台网页版
 2. 右上角出现控制面板
 3. 输入关键词（如：新闻、日报）
@@ -45,20 +53,24 @@
 5. 点击开始
 
 ### 清理黑名单（仅B站）
+
 1. 访问 [B站黑名单页面](https://account.bilibili.com/account/blacklist)
 2. 面板自动切换为清理模式
 3. 点击「开始清理黑名单」
 4. 等待清理完成
 
-> 💡 脚本会自动检测当前平台并调用对应的API
+### 预设管理
 
-## 开发
+1. 点击「⚙️ 预设管理」切换到预设页面
+2. 查看和管理现有预设模板
+3. 点击「同步社区」获取最新社区预设
+4. 创建自定义预设或导入分享的预设
 
-```bash
-pnpm install
-pnpm run build
-```
+### 社区贡献
 
-## License
+欢迎贡献新的预设模板！访问 [block-kit-templates](https://github.com/Steven-Qiang/block-kit-templates) 仓库：
 
-MIT
+1. Fork 仓库
+2. 添加新的 JSON 预设文件
+3. 提交 Pull Request
+4. 审核通过后所有用户都能同步到你的预设
