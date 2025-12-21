@@ -4,11 +4,11 @@
     <div class="form-group">
       <label>搜索关键词：</label>
       <div class="input-with-dropdown">
-        <input v-model="keyword" type="text" placeholder="用逗号分隔，例如：新闻,日报,资讯" :disabled="isRunning">
+        <input v-model="state.keyword" type="text" placeholder="用逗号分隔，例如：新闻,日报,资讯" :disabled="state.isRunning">
         <div ref="dropdownRef" class="template-dropdown">
           <button
             class="dropdown-btn"
-            :disabled="isRunning"
+            :disabled="state.isRunning"
             @click="showDropdown = !showDropdown"
           >
             📋 预设 ▼
@@ -28,34 +28,34 @@
       </div>
     </div>
     <div class="form-group">
-      <label>拉黑数量：</label>
-      <input v-model.number="limit" type="number" min="0" max="50" :disabled="isRunning">
+      <label>目标拉黑数量(每个关键词)：</label>
+      <input v-model.number="state.limit" type="number" min="0" :disabled="state.isRunning">
       <div class="hint">
-        拉黑数量0表示不限制，直到无搜索结果
+        数量 0 表示不限制，直到无搜索结果
       </div>
     </div>
     <div v-if="PlatformUtils.isBilibili(currentPlatform)" class="form-group">
       <label class="checkbox-label">
-        <input v-model="onlyVerified" type="checkbox" :disabled="isRunning">
+        <input v-model="state.onlyVerified" type="checkbox" :disabled="state.isRunning">
         只拉黑认证用户
       </label>
     </div>
     <div class="form-group">
-      <div class="advanced-toggle" @click="showAdvanced = !showAdvanced">
+      <div class="advanced-toggle" @click="state.showAdvanced = !state.showAdvanced">
         <span>高级设置</span>
-        <span class="arrow" :class="{ expanded: showAdvanced }">▼</span>
+        <span class="arrow" :class="{ expanded: state.showAdvanced }">▼</span>
       </div>
-      <div v-show="showAdvanced" class="advanced-content">
+      <div v-show="state.showAdvanced" class="advanced-content">
         <div class="advanced-item">
           <label>操作间隔（毫秒）：</label>
-          <input v-model.number="delay" type="number" min="500" max="5000" step="100" :disabled="isRunning">
+          <input v-model.number="state.delay" type="number" step="100" :disabled="state.isRunning">
           <div class="hint">
             每次拉黑后的等待时间
           </div>
         </div>
         <div class="advanced-item">
           <label>翻页间隔（毫秒）：</label>
-          <input v-model.number="pageDelay" type="number" min="1000" max="10000" step="100" :disabled="isRunning">
+          <input v-model.number="state.pageDelay" type="number" step="100" :disabled="state.isRunning">
           <div class="hint">
             每次翻页后的等待时间
           </div>
@@ -63,49 +63,82 @@
       </div>
     </div>
     <div class="form-group">
-      <button class="btn-start" :disabled="isRunning" @click="startTask">
+      <button class="btn-start" :disabled="state.isRunning" @click="startTask">
         开始拉黑
       </button>
     </div>
     <div class="form-group">
-      <button class="btn-stop" :disabled="!isRunning" @click="stopTask">
+      <button class="btn-stop" :disabled="!state.isRunning" @click="stopTask">
         停止任务
       </button>
     </div>
-    <log-viewer ref="logViewer" filename="拉黑日志" />
+    <log-viewer ref="logViewer" filename="拉黑日志" :log-key="`blocking-${currentPlatform?.name || 'unknown'}`" />
     <div class="counter">
-      已拉黑：<span class="count">{{ blockedCount }}</span>{{ limit > 0 ? ` / ${limit}` : '' }}
+      <span v-if="state.currentKeyword">{{ state.currentKeyword }}：已拉黑：<span class="count">{{ state.keywordBlockedCount }}</span>{{ state.limit > 0 ? ` / ${state.limit}` : '' }} | 总计：<span class="count">{{ state.blockedCount }}</span></span>
+      <span v-else>已拉黑：<span class="count">{{ state.blockedCount }}</span></span>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import type { User } from '../platforms';
-import { onMounted, onUnmounted, ref, useTemplateRef } from 'vue';
+import { onMounted, onUnmounted, reactive, ref, useTemplateRef, watch } from 'vue';
 import { getCurrentPlatform, LogColors, PlatformUtils } from '../platforms';
 import { useTemplateStore } from '../stores/templateStore';
 import { sleep } from '../utils';
 import LogViewer from './LogViewer.vue';
 
-const keyword = ref('');
-const limit = ref(10);
-const isRunning = ref(false);
-const isStopped = ref(false);
-const blockedCount = ref(0);
+const state = reactive({
+  keyword: '',
+  limit: 10,
+  isRunning: false,
+  isStopped: false,
+  blockedCount: 0,
+  keywordBlockedCount: 0,
+  currentKeyword: '',
+  onlyVerified: false,
+  showAdvanced: false,
+  delay: 1000,
+  pageDelay: 2000,
+});
+
 const currentPlatform = getCurrentPlatform();
-const onlyVerified = ref(false);
-const showAdvanced = ref(false);
 const logViewerRef = useTemplateRef('logViewer');
 
-const delay = ref(1000);
-const pageDelay = ref(2000);
+const SETTINGS_KEY = 'social-block-kit-settings';
+
+function saveSettings() {
+  GM_setValue(SETTINGS_KEY, JSON.stringify(state));
+}
+
+function loadSettings() {
+  try {
+    const saved = GM_getValue(SETTINGS_KEY, null);
+    if (saved) {
+      const settings = JSON.parse(saved);
+      Object.assign(state, {
+        keyword: settings.keyword ?? '',
+        limit: settings.limit ?? 10,
+        onlyVerified: settings.onlyVerified ?? false,
+        delay: settings.delay ?? 1000,
+        pageDelay: settings.pageDelay ?? 2000,
+        showAdvanced: settings.showAdvanced ?? false,
+        blockedCount: settings.blockedCount ?? 0,
+        keywordBlockedCount: settings.keywordBlockedCount ?? 0,
+        currentKeyword: settings.currentKeyword ?? '',
+      });
+    }
+  } catch (error) {
+    console.error('Failed to load settings:', error);
+  }
+}
 const templateStore = useTemplateStore();
 const keywordTemplates = ref(templateStore.getTemplates());
 const showDropdown = ref(false);
 const dropdownRef = useTemplateRef('dropdownRef');
 
 function applyTemplate(keywords: string) {
-  keyword.value = keywords;
+  state.keyword = keywords;
   showDropdown.value = false;
 }
 
@@ -116,25 +149,37 @@ function handleClickOutside(event: MouseEvent) {
 }
 
 onMounted(() => {
+  loadSettings();
   keywordTemplates.value = templateStore.getTemplates();
   document.addEventListener('click', handleClickOutside);
+  // 恢复日志
+  setTimeout(() => {
+    logViewerRef.value?.loadLogs();
+  }, 100);
 });
 
+// 实时保存设置
+watch(state, () => {
+  saveSettings();
+}, { deep: true });
+
 onUnmounted(() => {
+  saveSettings();
   document.removeEventListener('click', handleClickOutside);
 });
 
 function addLog(msg: string, color = LogColors.MUTED) {
   logViewerRef.value?.addLog(msg, color);
+  saveSettings();
 }
 
 async function startTask() {
-  if (!keyword.value.trim()) {
+  if (!state.keyword.trim()) {
     alert('请输入搜索关键词！');
     return;
   }
 
-  if (limit.value < 0) {
+  if (state.limit < 0) {
     alert('拉黑数量输入不正确');
     return;
   }
@@ -144,36 +189,39 @@ async function startTask() {
     return;
   }
 
-  isRunning.value = true;
-  isStopped.value = false;
-  blockedCount.value = 0;
+  state.isRunning = true;
+  state.isStopped = false;
+  state.blockedCount = 0;
+  state.keywordBlockedCount = 0;
+  state.currentKeyword = '';
   logViewerRef.value?.clearLogs();
 
-  const keywords = keyword.value.split(/[,，]/).map((k) => k.trim()).filter((k) => k);
+  const keywords = state.keyword.split(/[,，]/).map((k) => k.trim()).filter((k) => k);
 
-  for (let i = 0; i < keywords.length && !isStopped.value; i++) {
+  for (let i = 0; i < keywords.length && !state.isStopped; i++) {
     const currentKeyword = keywords[i];
     addLog(`[${i + 1}/${keywords.length}] 开始处理关键词「${currentKeyword}」`, LogColors.PRIMARY);
 
     await processKeyword(currentKeyword);
 
-    if (i < keywords.length - 1 && !isStopped.value) {
+    if (i < keywords.length - 1 && !state.isStopped) {
       addLog(`关键词「${currentKeyword}」处理完成，等待 2 秒后处理下一个...`, LogColors.MUTED);
       await sleep(2000);
     }
   }
 
-  addLog(`所有任务结束！共成功拉黑 ${blockedCount.value} 个用户`, LogColors.PRIMARY);
-  isRunning.value = false;
+  addLog(`所有任务结束！共成功拉黑 ${state.blockedCount} 个用户`, LogColors.PRIMARY);
+  state.isRunning = false;
 }
 
-async function processKeyword(currentKeyword: string) {
+async function processKeyword(keywordName: string) {
+  state.currentKeyword = keywordName;
+  state.keywordBlockedCount = 0;
   let currentPage = 0;
-  const keywordStartCount = blockedCount.value;
 
-  while (!isStopped.value && (limit.value === 0 || blockedCount.value < limit.value)) {
+  while (!state.isStopped && (state.limit === 0 || state.keywordBlockedCount < state.limit)) {
     addLog(`获取第 ${currentPage + 1} 页用户...`, LogColors.INFO);
-    const { users, hasMore } = await currentPlatform!.searchUsers(currentKeyword, currentPage, (msg) => {
+    const { users, hasMore } = await currentPlatform!.searchUsers(keywordName, currentPage, (msg) => {
       addLog(msg, LogColors.INFO);
     });
 
@@ -183,7 +231,7 @@ async function processKeyword(currentKeyword: string) {
     }
 
     for (const item of users) {
-      if ((limit.value > 0 && blockedCount.value >= limit.value) || isStopped.value)
+      if ((state.limit > 0 && state.keywordBlockedCount >= state.limit) || state.isStopped)
         break;
 
       const user: User = {
@@ -199,32 +247,32 @@ async function processKeyword(currentKeyword: string) {
         continue;
       }
 
-      if (onlyVerified.value && PlatformUtils.isBilibili(currentPlatform) && !PlatformUtils.isVerifiedUser(currentPlatform!, item.user_info)) {
+      if (state.onlyVerified && PlatformUtils.isBilibili(currentPlatform) && !PlatformUtils.isVerifiedUser(currentPlatform!, item.user_info)) {
         addLog(`非认证用户：${user.nickname}（跳过）`, LogColors.MUTED);
         continue;
       }
 
       if (await currentPlatform!.blockUser(user)) {
-        blockedCount.value++;
+        state.keywordBlockedCount++;
+        state.blockedCount++;
         addLog(`✅ 拉黑成功：${user.nickname}`, LogColors.SUCCESS);
       } else {
         addLog(`❌ 拉黑失败：${user.nickname}`, LogColors.ERROR);
       }
-      await sleep(delay.value);
+      await sleep(state.delay);
     }
 
     if (!hasMore)
       break;
     currentPage++;
-    await sleep(pageDelay.value);
+    await sleep(state.pageDelay);
   }
 
-  const keywordCount = blockedCount.value - keywordStartCount;
-  addLog(`关键词「${currentKeyword}」处理完成，拉黑 ${keywordCount} 个用户`, LogColors.PRIMARY);
+  addLog(`关键词「${keywordName}」处理完成，拉黑 ${state.keywordBlockedCount} 个用户`, LogColors.PRIMARY);
 }
 
 function stopTask() {
-  isStopped.value = true;
+  state.isStopped = true;
   addLog('任务已停止', LogColors.ERROR);
 }
 </script>

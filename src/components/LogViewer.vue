@@ -36,10 +36,12 @@ interface LogEntry {
 
 interface Props {
   filename?: string;
+  logKey?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   filename: '日志',
+  logKey: 'default',
 });
 
 const logs = ref<LogEntry[]>([]);
@@ -47,9 +49,29 @@ const logExpanded = ref(false);
 const autoScroll = ref(true);
 const logAreaRef = useTemplateRef('logArea');
 
+function getLogsKey() {
+  return `social-block-kit-logs-${props.logKey}`;
+}
+
+function saveLogs() {
+  GM_setValue(getLogsKey(), JSON.stringify(logs.value));
+}
+
+function loadLogs() {
+  try {
+    const saved = GM_getValue(getLogsKey(), null);
+    if (saved) {
+      logs.value = JSON.parse(saved);
+    }
+  } catch (error) {
+    console.error('Failed to load logs:', error);
+  }
+}
+
 function addLog(msg: string, color = '#333') {
   const time = new Date().toLocaleTimeString();
   logs.value.push({ msg, color, time });
+  saveLogs();
 
   if (autoScroll.value) {
     nextTick(() => {
@@ -60,6 +82,7 @@ function addLog(msg: string, color = '#333') {
 
 function clearLogs() {
   logs.value = [];
+  saveLogs();
 }
 
 function exportLogs() {
@@ -84,6 +107,7 @@ function exportLogs() {
 defineExpose({
   addLog,
   clearLogs,
+  loadLogs,
   logs: logs.value,
 });
 </script>

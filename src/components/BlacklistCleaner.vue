@@ -10,7 +10,7 @@
         停止清理
       </button>
     </div>
-    <log-viewer ref="logViewer" filename="清理日志" />
+    <log-viewer ref="logViewer" filename="清理日志" log-key="cleaner-bilibili" />
     <div class="counter">
       已移除：<span class="count">{{ removedCount }}</span> 个用户
     </div>
