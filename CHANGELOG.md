@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/Steven-Qiang/social-block-kit/compare/v1.3.0...v1.3.1) (2025-12-21)
+
+
+### Bug Fixes
+
+* 修复b站样式污染 ([1b5c4bd](https://github.com/Steven-Qiang/social-block-kit/commit/1b5c4bd30b29543eae5cfc40b2ec4d59bd8b3306))
+
 # [1.3.0](https://github.com/Steven-Qiang/social-block-kit/compare/v1.2.1...v1.3.0) (2025-12-20)
 
 
