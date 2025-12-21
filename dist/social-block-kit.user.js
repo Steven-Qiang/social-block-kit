@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         社交平台自动拉黑工具
 // @namespace    social-block-kit
-// @version      1.3.1
+// @version      1.3.2
 // @author       Steven-Qiang
 // @description  基于关键词搜索用户并批量拉黑的多平台油猴脚本，支持抖音、哔哩哔哩等
 // @license      MIT
@@ -22,11 +22,11 @@
 
   const d=new Set;const importCSS = async e=>{d.has(e)||(d.add(e),(t=>{typeof GM_addStyle=="function"?GM_addStyle(t):(document.head||document.documentElement).appendChild(document.createElement("style")).append(t);})(e));};
 
-  importCSS(' .log-container[data-v-62a6507f]{margin-bottom:12px}.log-header[data-v-62a6507f]{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f8f9fa;border-radius:4px 4px 0 0;border-bottom:1px solid #eee;font-size:13px;font-weight:700;color:#333}.log-controls[data-v-62a6507f]{display:flex;gap:4px}.log-control-btn[data-v-62a6507f]{width:auto;padding:4px 6px;font-size:12px;background:none;border:1px solid #ddd;border-radius:3px;cursor:pointer;transition:all .2s}.log-control-btn[data-v-62a6507f]:hover{background:#e9ecef}.log-area[data-v-62a6507f]{padding:10px;background:#f5f5f5;border-radius:0 0 4px 4px;font-size:12px;color:#666;min-height:60px;max-height:150px;overflow-y:auto}.log-area.expanded[data-v-62a6507f]{max-height:300px}.log-empty[data-v-62a6507f]{color:#999}.log-item[data-v-62a6507f]{margin-bottom:4px}.content[data-v-343c2ad5]{padding:16px}.form-group[data-v-343c2ad5]{margin-bottom:12px}label[data-v-343c2ad5]{display:block;margin-bottom:4px;font-size:13px;color:#333}input[type=text][data-v-343c2ad5],input[type=number][data-v-343c2ad5]{width:100%;padding:8px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;font-size:13px}.checkbox-label[data-v-343c2ad5]{display:flex;align-items:center;font-size:13px;color:#333;cursor:pointer}.checkbox-label input[type=checkbox][data-v-343c2ad5]{width:auto;margin-right:6px}input[data-v-343c2ad5]:disabled{background:#f5f5f5;cursor:not-allowed}button[data-v-343c2ad5]{width:100%;padding:10px;border:none;border-radius:4px;cursor:pointer;font-size:14px;font-weight:700}.btn-start[data-v-343c2ad5]{background:#667eea;color:#fff}.btn-start[data-v-343c2ad5]:disabled{background:#ccc;cursor:not-allowed}.btn-stop[data-v-343c2ad5]{background:#ff5722;color:#fff}.btn-stop[data-v-343c2ad5]:disabled{background:#ccc;cursor:not-allowed}.log-area[data-v-343c2ad5]{padding:10px;background:#f5f5f5;border-radius:4px;font-size:12px;color:#666;min-height:60px;max-height:150px;overflow-y:auto}.log-empty[data-v-343c2ad5]{color:#999}.log-item[data-v-343c2ad5]{margin-bottom:4px}.counter[data-v-343c2ad5]{margin-top:18px;font-size:12px;color:#999;text-align:center}.count[data-v-343c2ad5]{font-weight:700}.btn-start[data-v-343c2ad5]{background:#ff5722}.count[data-v-343c2ad5]{color:#ff5722}.content[data-v-bba5d353]{padding:16px}.form-group[data-v-bba5d353]{margin-bottom:12px}label[data-v-bba5d353]{display:block;margin-bottom:4px;font-size:13px;color:#333}input[type=text][data-v-bba5d353],input[type=number][data-v-bba5d353]{width:100%;padding:8px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;font-size:13px}.checkbox-label[data-v-bba5d353]{display:flex;align-items:center;font-size:13px;color:#333;cursor:pointer}.checkbox-label input[type=checkbox][data-v-bba5d353]{width:auto;margin-right:6px}input[data-v-bba5d353]:disabled{background:#f5f5f5;cursor:not-allowed}button[data-v-bba5d353]{width:100%;padding:10px;border:none;border-radius:4px;cursor:pointer;font-size:14px;font-weight:700}.btn-start[data-v-bba5d353]{background:#667eea;color:#fff}.btn-start[data-v-bba5d353]:disabled{background:#ccc;cursor:not-allowed}.btn-stop[data-v-bba5d353]{background:#ff5722;color:#fff}.btn-stop[data-v-bba5d353]:disabled{background:#ccc;cursor:not-allowed}.log-area[data-v-bba5d353]{padding:10px;background:#f5f5f5;border-radius:4px;font-size:12px;color:#666;min-height:60px;max-height:150px;overflow-y:auto}.log-empty[data-v-bba5d353]{color:#999}.log-item[data-v-bba5d353]{margin-bottom:4px}.counter[data-v-bba5d353]{margin-top:18px;font-size:12px;color:#999;text-align:center}.count[data-v-bba5d353]{font-weight:700}.count[data-v-bba5d353]{color:#667eea}.hint[data-v-bba5d353]{font-size:11px;color:#999;margin-top:10px;margin-left:2px}.advanced-toggle[data-v-bba5d353]{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f5f5f5;border-radius:4px;cursor:pointer;font-size:13px;color:#667eea;transition:background-color .2s;-webkit-user-select:none;user-select:none}.advanced-toggle[data-v-bba5d353]:hover{background:#ebebeb}.arrow[data-v-bba5d353]{font-size:10px;transition:transform .2s}.arrow.expanded[data-v-bba5d353]{transform:rotate(180deg)}.advanced-content[data-v-bba5d353]{margin-top:8px;padding:12px;background:#fafafa;border-radius:4px;border:1px solid #eee}.advanced-item[data-v-bba5d353]{margin-bottom:12px}.advanced-item[data-v-bba5d353]:last-child{margin-bottom:0}.input-with-dropdown[data-v-bba5d353]{display:flex;gap:4px}.input-with-dropdown input[data-v-bba5d353]{flex:1}.template-dropdown[data-v-bba5d353]{position:relative}.dropdown-btn[data-v-bba5d353]{padding:8px 12px;font-size:11px;background:#f0f4ff;border:1px solid #d0d9ff;border-radius:4px;color:#667eea;cursor:pointer;transition:all .2s;white-space:nowrap}.dropdown-btn[data-v-bba5d353]:hover:not(:disabled){background:#e6edff;border-color:#b8c5ff}.dropdown-btn[data-v-bba5d353]:disabled{opacity:.5;cursor:not-allowed}.dropdown-menu[data-v-bba5d353]{position:absolute;top:100%;right:0;min-width:150px;background:#fff;border:1px solid #ddd;border-radius:4px;box-shadow:0 4px 12px #00000026;z-index:1000;max-height:200px;overflow-y:auto}.dropdown-item[data-v-bba5d353]{display:flex;align-items:center;padding:8px 12px;cursor:pointer;transition:background-color .2s;font-size:12px}.dropdown-item[data-v-bba5d353]:hover{background:#f5f5f5}.item-icon[data-v-bba5d353]{margin-right:8px;font-size:14px}.item-name[data-v-bba5d353]{flex:1}.float-ball[data-v-f83e8372]{position:fixed;width:60px;height:60px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px;cursor:pointer;box-shadow:0 4px 12px #667eea66;z-index:999999;-webkit-user-select:none;user-select:none;overflow:hidden;transition:transform .2s cubic-bezier(.4,0,.2,1),box-shadow .2s cubic-bezier(.4,0,.2,1);transform:scale(1)}.float-ball.animating[data-v-f83e8372]{transition:all .3s cubic-bezier(.4,0,.2,1)}.float-ball.dragging[data-v-f83e8372]{transition:none;transform:scale(1.1);box-shadow:0 8px 20px #667eea99}.float-ball[data-v-f83e8372]:hover{transform:scale(1.1);box-shadow:0 6px 16px #667eea80}.float-ball[data-v-f83e8372]:active{transform:scale(.95)}.ball-icon[data-v-f83e8372]{position:relative;z-index:2;transition:transform .2s}.ripple[data-v-f83e8372]{position:absolute;top:50%;left:50%;width:0;height:0;background:#ffffff4d;border-radius:50%;transform:translate(-50%,-50%);animation:ripple-f83e8372 2s infinite}@keyframes ripple-f83e8372{0%{width:0;height:0;opacity:1}to{width:120px;height:120px;opacity:0}}.panel[data-v-f83e8372]{position:fixed;min-width:300px;max-width:90vw;background:#fff;border-radius:12px;box-shadow:0 8px 32px #00000026;z-index:999999;font-family:Arial,sans-serif;animation:panelEnter-f83e8372 .3s cubic-bezier(.4,0,.2,1)}@keyframes panelEnter-f83e8372{0%{opacity:0;transform:scale(.8) translateY(-20px)}to{opacity:1;transform:scale(1) translateY(0)}}.header[data-v-f83e8372]{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:12px 16px;border-radius:12px 12px 0 0;font-weight:700;cursor:move;-webkit-user-select:none;user-select:none;display:flex;justify-content:space-between;align-items:center;position:relative;overflow:hidden}.header[data-v-f83e8372]:before{content:"";position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);transition:left .5s}.header[data-v-f83e8372]:hover:before{left:100%}.close-btn[data-v-f83e8372]{background:none;border:none;color:#fff;cursor:pointer;font-size:20px;line-height:1;padding:4px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .2s;position:relative;z-index:1}.close-btn[data-v-f83e8372]:hover{background-color:#fff3;transform:rotate(90deg)}.content-wrapper[data-v-f83e8372]{animation:contentSlide-f83e8372 .3s ease-out .1s both}@keyframes contentSlide-f83e8372{0%{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}.content[data-v-87bf9117]{padding:16px}.form-group[data-v-87bf9117]{margin-bottom:12px}label[data-v-87bf9117]{display:block;margin-bottom:4px;font-size:13px;color:#333}input[type=text][data-v-87bf9117],input[type=number][data-v-87bf9117]{width:100%;padding:8px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;font-size:13px}.checkbox-label[data-v-87bf9117]{display:flex;align-items:center;font-size:13px;color:#333;cursor:pointer}.checkbox-label input[type=checkbox][data-v-87bf9117]{width:auto;margin-right:6px}input[data-v-87bf9117]:disabled{background:#f5f5f5;cursor:not-allowed}button[data-v-87bf9117]{width:100%;padding:10px;border:none;border-radius:4px;cursor:pointer;font-size:14px;font-weight:700}.btn-start[data-v-87bf9117]{background:#667eea;color:#fff}.btn-start[data-v-87bf9117]:disabled{background:#ccc;cursor:not-allowed}.btn-stop[data-v-87bf9117]{background:#ff5722;color:#fff}.btn-stop[data-v-87bf9117]:disabled{background:#ccc;cursor:not-allowed}.log-area[data-v-87bf9117]{padding:10px;background:#f5f5f5;border-radius:4px;font-size:12px;color:#666;min-height:60px;max-height:150px;overflow-y:auto}.log-empty[data-v-87bf9117]{color:#999}.log-item[data-v-87bf9117]{margin-bottom:4px}.counter[data-v-87bf9117]{margin-top:18px;font-size:12px;color:#999;text-align:center}.count[data-v-87bf9117]{font-weight:700}.header[data-v-87bf9117]{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px}.header h3[data-v-87bf9117]{margin:0;color:#333;font-size:14px;flex:1}.btn-add[data-v-87bf9117]{padding:4px 8px;background:#667eea;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:11px}.template-list[data-v-87bf9117]{margin-bottom:16px;max-height:200px;overflow-y:auto}.template-item[data-v-87bf9117]{display:flex;justify-content:space-between;align-items:center;padding:8px;border:1px solid #eee;border-radius:6px;margin-bottom:6px}.template-info[data-v-87bf9117]{display:flex;align-items:center;flex:1;min-width:0}.template-icon[data-v-87bf9117]{font-size:14px;margin-right:8px;flex-shrink:0}.template-details[data-v-87bf9117]{flex:1;min-width:0}.template-name[data-v-87bf9117]{font-weight:700;margin-bottom:2px;font-size:12px;display:flex;align-items:center;gap:4px}.template-author[data-v-87bf9117]{font-size:10px;color:#28a745;font-weight:400}.template-source[data-v-87bf9117]{font-size:10px;color:#667eea;font-weight:400}.template-keywords[data-v-87bf9117]{font-size:10px;color:#666;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.template-actions[data-v-87bf9117]{display:flex;gap:2px;flex-shrink:0}.template-actions button[data-v-87bf9117]{padding:2px 4px;border:none;border-radius:3px;cursor:pointer;font-size:10px}.btn-edit[data-v-87bf9117]{background:#f0f4ff}.btn-share[data-v-87bf9117]{background:#f0fff4}.btn-delete[data-v-87bf9117]{background:#fff0f0}.btn-edit[data-v-87bf9117]:disabled,.btn-delete[data-v-87bf9117]:disabled{opacity:.3;cursor:not-allowed}.import-section[data-v-87bf9117]{border-top:1px solid #eee;padding-top:12px}.import-section h4[data-v-87bf9117]{margin:0 0 6px;font-size:12px}.import-section textarea[data-v-87bf9117]{width:100%;margin-bottom:6px;padding:6px;border:1px solid #ddd;border-radius:4px;resize:vertical;font-size:11px}.btn-import[data-v-87bf9117]{padding:4px 8px;background:#28a745;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:11px}.import-actions[data-v-87bf9117]{display:flex;gap:6px}.btn-sync[data-v-87bf9117]{padding:4px 8px;background:#17a2b8;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:11px}.btn-sync[data-v-87bf9117]:disabled{background:#6c757d;cursor:not-allowed}.contribute-info[data-v-87bf9117]{margin-top:8px;font-size:11px;color:#666;text-align:center}.contribute-info a[data-v-87bf9117]{color:#667eea;text-decoration:none}.contribute-info a[data-v-87bf9117]:hover{text-decoration:underline}.dialog-overlay[data-v-87bf9117]{position:fixed;inset:0;background:#00000080;display:flex;align-items:center;justify-content:center;z-index:1000000}.dialog[data-v-87bf9117]{background:#fff;padding:16px;border-radius:6px;width:90%;max-width:320px}.dialog h4[data-v-87bf9117]{margin:0 0 12px;font-size:14px}.dialog textarea[data-v-87bf9117]{width:100%;padding:6px;border:1px solid #ddd;border-radius:4px;resize:vertical;font-size:11px}.dialog input[data-v-87bf9117]{font-size:11px}.dialog-actions[data-v-87bf9117]{display:flex;justify-content:flex-end;gap:6px;margin-top:12px}.btn-cancel[data-v-87bf9117]{padding:4px 8px;background:#6c757d;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:11px}.btn-save[data-v-87bf9117]{padding:4px 8px;background:#667eea;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:11px}.guide[data-v-656be68b]{padding:8px 16px;border-top:1px solid #eee}.guide-link[data-v-656be68b]{display:block;text-align:center;color:#667eea;text-decoration:none;font-size:13px;padding:8px;border-radius:6px;transition:all .2s;position:relative;overflow:hidden}.guide-link[data-v-656be68b]:before{content:"";position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(102,126,234,.1),transparent);transition:left .3s}.guide-link[data-v-656be68b]:hover{background-color:#f0f4ff;transform:translateY(-1px)}.guide-link[data-v-656be68b]:hover:before{left:100%}.footer[data-v-656be68b]{padding:8px 16px;border-top:1px solid #eee;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#999}.version[data-v-656be68b]{font-weight:700}.copyright[data-v-656be68b]{flex:1;text-align:center}.github-link[data-v-656be68b]{display:flex;align-items:center;gap:4px;color:#667eea;text-decoration:none;transition:color .2s}.github-link[data-v-656be68b]:hover{color:#5a67d8}.nav-section[data-v-656be68b]{padding:8px 16px;border-top:1px solid #eee;display:flex;gap:4px}.nav-btn[data-v-656be68b]{flex:1;padding:6px 8px;font-size:11px;background:#f5f5f5;border:1px solid #ddd;border-radius:4px;cursor:pointer;transition:all .2s}.nav-btn[data-v-656be68b]:hover{background:#ebebeb}.nav-btn.active[data-v-656be68b]{background:#667eea;color:#fff;border-color:#667eea} ');
+  importCSS(' .log-container[data-v-7d7efcd0]{margin-bottom:12px}.log-header[data-v-7d7efcd0]{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f8f9fa;border-radius:4px 4px 0 0;border-bottom:1px solid #eee;font-size:13px;font-weight:700;color:#333}.log-controls[data-v-7d7efcd0]{display:flex;gap:4px}.log-control-btn[data-v-7d7efcd0]{width:auto;padding:4px 6px;font-size:12px;background:none;border:1px solid #ddd;border-radius:3px;cursor:pointer;transition:all .2s}.log-control-btn[data-v-7d7efcd0]:hover{background:#e9ecef}.log-area[data-v-7d7efcd0]{padding:10px;background:#f5f5f5;border-radius:0 0 4px 4px;font-size:12px;color:#666;min-height:60px;max-height:150px;overflow-y:auto}.log-area.expanded[data-v-7d7efcd0]{max-height:300px}.log-empty[data-v-7d7efcd0]{color:#999}.log-item[data-v-7d7efcd0]{margin-bottom:4px}.content[data-v-a1057582]{padding:16px}.form-group[data-v-a1057582]{margin-bottom:12px}label[data-v-a1057582]{display:block;margin-bottom:4px;font-size:13px;color:#333}input[type=text][data-v-a1057582],input[type=number][data-v-a1057582]{width:100%;padding:8px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;font-size:13px}.checkbox-label[data-v-a1057582]{display:flex;align-items:center;font-size:13px;color:#333;cursor:pointer}.checkbox-label input[type=checkbox][data-v-a1057582]{width:auto;margin-right:6px}input[data-v-a1057582]:disabled{background:#f5f5f5;cursor:not-allowed}button[data-v-a1057582]{width:100%;padding:10px;border:none;border-radius:4px;cursor:pointer;font-size:14px;font-weight:700}.btn-start[data-v-a1057582]{background:#667eea;color:#fff}.btn-start[data-v-a1057582]:disabled{background:#ccc;cursor:not-allowed}.btn-stop[data-v-a1057582]{background:#ff5722;color:#fff}.btn-stop[data-v-a1057582]:disabled{background:#ccc;cursor:not-allowed}.log-area[data-v-a1057582]{padding:10px;background:#f5f5f5;border-radius:4px;font-size:12px;color:#666;min-height:60px;max-height:150px;overflow-y:auto}.log-empty[data-v-a1057582]{color:#999}.log-item[data-v-a1057582]{margin-bottom:4px}.counter[data-v-a1057582]{margin-top:18px;font-size:12px;color:#999;text-align:center}.count[data-v-a1057582]{font-weight:700}.btn-start[data-v-a1057582]{background:#ff5722}.count[data-v-a1057582]{color:#ff5722}.content[data-v-8bf53d79]{padding:16px}.form-group[data-v-8bf53d79]{margin-bottom:12px}label[data-v-8bf53d79]{display:block;margin-bottom:4px;font-size:13px;color:#333}input[type=text][data-v-8bf53d79],input[type=number][data-v-8bf53d79]{width:100%;padding:8px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;font-size:13px}.checkbox-label[data-v-8bf53d79]{display:flex;align-items:center;font-size:13px;color:#333;cursor:pointer}.checkbox-label input[type=checkbox][data-v-8bf53d79]{width:auto;margin-right:6px}input[data-v-8bf53d79]:disabled{background:#f5f5f5;cursor:not-allowed}button[data-v-8bf53d79]{width:100%;padding:10px;border:none;border-radius:4px;cursor:pointer;font-size:14px;font-weight:700}.btn-start[data-v-8bf53d79]{background:#667eea;color:#fff}.btn-start[data-v-8bf53d79]:disabled{background:#ccc;cursor:not-allowed}.btn-stop[data-v-8bf53d79]{background:#ff5722;color:#fff}.btn-stop[data-v-8bf53d79]:disabled{background:#ccc;cursor:not-allowed}.log-area[data-v-8bf53d79]{padding:10px;background:#f5f5f5;border-radius:4px;font-size:12px;color:#666;min-height:60px;max-height:150px;overflow-y:auto}.log-empty[data-v-8bf53d79]{color:#999}.log-item[data-v-8bf53d79]{margin-bottom:4px}.counter[data-v-8bf53d79]{margin-top:18px;font-size:12px;color:#999;text-align:center}.count[data-v-8bf53d79]{font-weight:700}.count[data-v-8bf53d79]{color:#667eea}.hint[data-v-8bf53d79]{font-size:11px;color:#999;margin-top:10px;margin-left:2px}.advanced-toggle[data-v-8bf53d79]{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f5f5f5;border-radius:4px;cursor:pointer;font-size:13px;color:#667eea;transition:background-color .2s;-webkit-user-select:none;user-select:none}.advanced-toggle[data-v-8bf53d79]:hover{background:#ebebeb}.arrow[data-v-8bf53d79]{font-size:10px;transition:transform .2s}.arrow.expanded[data-v-8bf53d79]{transform:rotate(180deg)}.advanced-content[data-v-8bf53d79]{margin-top:8px;padding:12px;background:#fafafa;border-radius:4px;border:1px solid #eee}.advanced-item[data-v-8bf53d79]{margin-bottom:12px}.advanced-item[data-v-8bf53d79]:last-child{margin-bottom:0}.input-with-dropdown[data-v-8bf53d79]{display:flex;gap:4px}.input-with-dropdown input[data-v-8bf53d79]{flex:1}.template-dropdown[data-v-8bf53d79]{position:relative}.dropdown-btn[data-v-8bf53d79]{padding:8px 12px;font-size:11px;background:#f0f4ff;border:1px solid #d0d9ff;border-radius:4px;color:#667eea;cursor:pointer;transition:all .2s;white-space:nowrap}.dropdown-btn[data-v-8bf53d79]:hover:not(:disabled){background:#e6edff;border-color:#b8c5ff}.dropdown-btn[data-v-8bf53d79]:disabled{opacity:.5;cursor:not-allowed}.dropdown-menu[data-v-8bf53d79]{position:absolute;top:100%;right:0;min-width:150px;background:#fff;border:1px solid #ddd;border-radius:4px;box-shadow:0 4px 12px #00000026;z-index:1000;max-height:200px;overflow-y:auto}.dropdown-item[data-v-8bf53d79]{display:flex;align-items:center;padding:8px 12px;cursor:pointer;transition:background-color .2s;font-size:12px}.dropdown-item[data-v-8bf53d79]:hover{background:#f5f5f5}.item-icon[data-v-8bf53d79]{margin-right:8px;font-size:14px}.item-name[data-v-8bf53d79]{flex:1}.float-ball[data-v-f83e8372]{position:fixed;width:60px;height:60px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px;cursor:pointer;box-shadow:0 4px 12px #667eea66;z-index:999999;-webkit-user-select:none;user-select:none;overflow:hidden;transition:transform .2s cubic-bezier(.4,0,.2,1),box-shadow .2s cubic-bezier(.4,0,.2,1);transform:scale(1)}.float-ball.animating[data-v-f83e8372]{transition:all .3s cubic-bezier(.4,0,.2,1)}.float-ball.dragging[data-v-f83e8372]{transition:none;transform:scale(1.1);box-shadow:0 8px 20px #667eea99}.float-ball[data-v-f83e8372]:hover{transform:scale(1.1);box-shadow:0 6px 16px #667eea80}.float-ball[data-v-f83e8372]:active{transform:scale(.95)}.ball-icon[data-v-f83e8372]{position:relative;z-index:2;transition:transform .2s}.ripple[data-v-f83e8372]{position:absolute;top:50%;left:50%;width:0;height:0;background:#ffffff4d;border-radius:50%;transform:translate(-50%,-50%);animation:ripple-f83e8372 2s infinite}@keyframes ripple-f83e8372{0%{width:0;height:0;opacity:1}to{width:120px;height:120px;opacity:0}}.panel[data-v-f83e8372]{position:fixed;min-width:300px;max-width:90vw;background:#fff;border-radius:12px;box-shadow:0 8px 32px #00000026;z-index:999999;font-family:Arial,sans-serif;animation:panelEnter-f83e8372 .3s cubic-bezier(.4,0,.2,1)}@keyframes panelEnter-f83e8372{0%{opacity:0;transform:scale(.8) translateY(-20px)}to{opacity:1;transform:scale(1) translateY(0)}}.header[data-v-f83e8372]{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:12px 16px;border-radius:12px 12px 0 0;font-weight:700;cursor:move;-webkit-user-select:none;user-select:none;display:flex;justify-content:space-between;align-items:center;position:relative;overflow:hidden}.header[data-v-f83e8372]:before{content:"";position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);transition:left .5s}.header[data-v-f83e8372]:hover:before{left:100%}.close-btn[data-v-f83e8372]{background:none;border:none;color:#fff;cursor:pointer;font-size:20px;line-height:1;padding:4px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .2s;position:relative;z-index:1}.close-btn[data-v-f83e8372]:hover{background-color:#fff3;transform:rotate(90deg)}.content-wrapper[data-v-f83e8372]{animation:contentSlide-f83e8372 .3s ease-out .1s both}@keyframes contentSlide-f83e8372{0%{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}.content[data-v-87bf9117]{padding:16px}.form-group[data-v-87bf9117]{margin-bottom:12px}label[data-v-87bf9117]{display:block;margin-bottom:4px;font-size:13px;color:#333}input[type=text][data-v-87bf9117],input[type=number][data-v-87bf9117]{width:100%;padding:8px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;font-size:13px}.checkbox-label[data-v-87bf9117]{display:flex;align-items:center;font-size:13px;color:#333;cursor:pointer}.checkbox-label input[type=checkbox][data-v-87bf9117]{width:auto;margin-right:6px}input[data-v-87bf9117]:disabled{background:#f5f5f5;cursor:not-allowed}button[data-v-87bf9117]{width:100%;padding:10px;border:none;border-radius:4px;cursor:pointer;font-size:14px;font-weight:700}.btn-start[data-v-87bf9117]{background:#667eea;color:#fff}.btn-start[data-v-87bf9117]:disabled{background:#ccc;cursor:not-allowed}.btn-stop[data-v-87bf9117]{background:#ff5722;color:#fff}.btn-stop[data-v-87bf9117]:disabled{background:#ccc;cursor:not-allowed}.log-area[data-v-87bf9117]{padding:10px;background:#f5f5f5;border-radius:4px;font-size:12px;color:#666;min-height:60px;max-height:150px;overflow-y:auto}.log-empty[data-v-87bf9117]{color:#999}.log-item[data-v-87bf9117]{margin-bottom:4px}.counter[data-v-87bf9117]{margin-top:18px;font-size:12px;color:#999;text-align:center}.count[data-v-87bf9117]{font-weight:700}.header[data-v-87bf9117]{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px}.header h3[data-v-87bf9117]{margin:0;color:#333;font-size:14px;flex:1}.btn-add[data-v-87bf9117]{padding:4px 8px;background:#667eea;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:11px}.template-list[data-v-87bf9117]{margin-bottom:16px;max-height:200px;overflow-y:auto}.template-item[data-v-87bf9117]{display:flex;justify-content:space-between;align-items:center;padding:8px;border:1px solid #eee;border-radius:6px;margin-bottom:6px}.template-info[data-v-87bf9117]{display:flex;align-items:center;flex:1;min-width:0}.template-icon[data-v-87bf9117]{font-size:14px;margin-right:8px;flex-shrink:0}.template-details[data-v-87bf9117]{flex:1;min-width:0}.template-name[data-v-87bf9117]{font-weight:700;margin-bottom:2px;font-size:12px;display:flex;align-items:center;gap:4px}.template-author[data-v-87bf9117]{font-size:10px;color:#28a745;font-weight:400}.template-source[data-v-87bf9117]{font-size:10px;color:#667eea;font-weight:400}.template-keywords[data-v-87bf9117]{font-size:10px;color:#666;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.template-actions[data-v-87bf9117]{display:flex;gap:2px;flex-shrink:0}.template-actions button[data-v-87bf9117]{padding:2px 4px;border:none;border-radius:3px;cursor:pointer;font-size:10px}.btn-edit[data-v-87bf9117]{background:#f0f4ff}.btn-share[data-v-87bf9117]{background:#f0fff4}.btn-delete[data-v-87bf9117]{background:#fff0f0}.btn-edit[data-v-87bf9117]:disabled,.btn-delete[data-v-87bf9117]:disabled{opacity:.3;cursor:not-allowed}.import-section[data-v-87bf9117]{border-top:1px solid #eee;padding-top:12px}.import-section h4[data-v-87bf9117]{margin:0 0 6px;font-size:12px}.import-section textarea[data-v-87bf9117]{width:100%;margin-bottom:6px;padding:6px;border:1px solid #ddd;border-radius:4px;resize:vertical;font-size:11px}.btn-import[data-v-87bf9117]{padding:4px 8px;background:#28a745;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:11px}.import-actions[data-v-87bf9117]{display:flex;gap:6px}.btn-sync[data-v-87bf9117]{padding:4px 8px;background:#17a2b8;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:11px}.btn-sync[data-v-87bf9117]:disabled{background:#6c757d;cursor:not-allowed}.contribute-info[data-v-87bf9117]{margin-top:8px;font-size:11px;color:#666;text-align:center}.contribute-info a[data-v-87bf9117]{color:#667eea;text-decoration:none}.contribute-info a[data-v-87bf9117]:hover{text-decoration:underline}.dialog-overlay[data-v-87bf9117]{position:fixed;inset:0;background:#00000080;display:flex;align-items:center;justify-content:center;z-index:1000000}.dialog[data-v-87bf9117]{background:#fff;padding:16px;border-radius:6px;width:90%;max-width:320px}.dialog h4[data-v-87bf9117]{margin:0 0 12px;font-size:14px}.dialog textarea[data-v-87bf9117]{width:100%;padding:6px;border:1px solid #ddd;border-radius:4px;resize:vertical;font-size:11px}.dialog input[data-v-87bf9117]{font-size:11px}.dialog-actions[data-v-87bf9117]{display:flex;justify-content:flex-end;gap:6px;margin-top:12px}.btn-cancel[data-v-87bf9117]{padding:4px 8px;background:#6c757d;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:11px}.btn-save[data-v-87bf9117]{padding:4px 8px;background:#667eea;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:11px}.guide[data-v-656be68b]{padding:8px 16px;border-top:1px solid #eee}.guide-link[data-v-656be68b]{display:block;text-align:center;color:#667eea;text-decoration:none;font-size:13px;padding:8px;border-radius:6px;transition:all .2s;position:relative;overflow:hidden}.guide-link[data-v-656be68b]:before{content:"";position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(102,126,234,.1),transparent);transition:left .3s}.guide-link[data-v-656be68b]:hover{background-color:#f0f4ff;transform:translateY(-1px)}.guide-link[data-v-656be68b]:hover:before{left:100%}.footer[data-v-656be68b]{padding:8px 16px;border-top:1px solid #eee;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#999}.version[data-v-656be68b]{font-weight:700}.copyright[data-v-656be68b]{flex:1;text-align:center}.github-link[data-v-656be68b]{display:flex;align-items:center;gap:4px;color:#667eea;text-decoration:none;transition:color .2s}.github-link[data-v-656be68b]:hover{color:#5a67d8}.nav-section[data-v-656be68b]{padding:8px 16px;border-top:1px solid #eee;display:flex;gap:4px}.nav-btn[data-v-656be68b]{flex:1;padding:6px 8px;font-size:11px;background:#f5f5f5;border:1px solid #ddd;border-radius:4px;cursor:pointer;transition:all .2s}.nav-btn[data-v-656be68b]:hover{background:#ebebeb}.nav-btn.active[data-v-656be68b]{background:#667eea;color:#fff;border-color:#667eea} ');
 
   const name = "social-block-kit";
   const type = "module";
-  const version = "1.3.1";
+  const version = "1.3.2";
   const packageManager = "pnpm@10.24.0";
   const description = "基于关键词搜索用户并批量拉黑的多平台油猴脚本，支持抖音、哔哩哔哩等";
   const author = "Steven-Qiang";
@@ -52,6 +52,8 @@
     devDependencies
   };
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  var _GM_getValue = (() => typeof GM_getValue != "undefined" ? GM_getValue : void 0)();
+  var _GM_setValue = (() => typeof GM_setValue != "undefined" ? GM_setValue : void 0)();
   const _hoisted_1$5 = { class: "log-container" };
   const _hoisted_2$4 = { class: "log-header" };
   const _hoisted_3$4 = { class: "log-controls" };
@@ -64,7 +66,8 @@
   const _sfc_main$5 = vue.defineComponent({
     __name: "LogViewer",
     props: {
-      filename: { default: "日志" }
+      filename: { default: "日志" },
+      logKey: { default: "default" }
     },
     setup(__props, { expose: __expose }) {
       const props = __props;
@@ -72,9 +75,26 @@
       const logExpanded = vue.ref(false);
       const autoScroll = vue.ref(true);
       const logAreaRef = vue.useTemplateRef("logArea");
+      function getLogsKey() {
+        return `social-block-kit-logs-${props.logKey}`;
+      }
+      function saveLogs() {
+        _GM_setValue(getLogsKey(), JSON.stringify(logs.value));
+      }
+      function loadLogs() {
+        try {
+          const saved = _GM_getValue(getLogsKey(), null);
+          if (saved) {
+            logs.value = JSON.parse(saved);
+          }
+        } catch (error) {
+          console.error("Failed to load logs:", error);
+        }
+      }
       function addLog(msg, color = "#333") {
         const time = ( new Date()).toLocaleTimeString();
         logs.value.push({ msg, color, time });
+        saveLogs();
         if (autoScroll.value) {
           vue.nextTick(() => {
             logAreaRef.value?.scrollTo(0, logAreaRef.value.scrollHeight);
@@ -83,6 +103,7 @@
       }
       function clearLogs() {
         logs.value = [];
+        saveLogs();
       }
       function exportLogs() {
         if (logs.value.length === 0) {
@@ -103,6 +124,7 @@
       __expose({
         addLog,
         clearLogs,
+        loadLogs,
         logs: logs.value
       });
       return (_ctx, _cache) => {
@@ -151,7 +173,7 @@
     }
     return target;
   };
-  const LogViewer = _export_sfc(_sfc_main$5, [["__scopeId", "data-v-62a6507f"]]);
+  const LogViewer = _export_sfc(_sfc_main$5, [["__scopeId", "data-v-7d7efcd0"]]);
   const _hoisted_1$4 = { class: "content" };
   const _hoisted_2$3 = { class: "form-group" };
   const _hoisted_3$3 = ["disabled"];
@@ -248,7 +270,8 @@
           ]),
           vue.createVNode(LogViewer, {
             ref: "logViewer",
-            filename: "清理日志"
+            filename: "清理日志",
+            "log-key": "cleaner-bilibili"
           }, null, 512),
           vue.createElementVNode("div", _hoisted_6$3, [
             _cache[0] || (_cache[0] = vue.createTextVNode(" 已移除：", -1)),
@@ -259,7 +282,7 @@
       };
     }
   });
-  const BlacklistCleaner = _export_sfc(_sfc_main$4, [["__scopeId", "data-v-343c2ad5"]]);
+  const BlacklistCleaner = _export_sfc(_sfc_main$4, [["__scopeId", "data-v-a1057582"]]);
   var PlatformType = ((PlatformType2) => {
     PlatformType2["DOUYIN"] = "douyin";
     PlatformType2["BILIBILI"] = "bilibili";
@@ -442,8 +465,6 @@ static getPlatformDisplayName(platformType) {
   function getCurrentPlatform() {
     return platforms.find((platform) => platform.isCurrentPlatform()) || null;
   }
-  var _GM_getValue = (() => typeof GM_getValue != "undefined" ? GM_getValue : void 0)();
-  var _GM_setValue = (() => typeof GM_setValue != "undefined" ? GM_setValue : void 0)();
   const GITHUB_API_BASE = "https://api.github.com/repos/Steven-Qiang/block-kit-templates";
   const TEMPLATES_PATH = "contents/community-templates";
   class GitHubTemplateService {
@@ -625,27 +646,60 @@ async fetchCommunityTemplates() {
   const _hoisted_23 = { class: "form-group" };
   const _hoisted_24 = ["disabled"];
   const _hoisted_25 = { class: "counter" };
-  const _hoisted_26 = { class: "count" };
+  const _hoisted_26 = { key: 0 };
+  const _hoisted_27 = { class: "count" };
+  const _hoisted_28 = { class: "count" };
+  const _hoisted_29 = { key: 1 };
+  const _hoisted_30 = { class: "count" };
+  const SETTINGS_KEY = "social-block-kit-settings";
   const _sfc_main$3 = vue.defineComponent({
     __name: "BlockingTool",
     setup(__props) {
-      const keyword = vue.ref("");
-      const limit = vue.ref(10);
-      const isRunning = vue.ref(false);
-      const isStopped = vue.ref(false);
-      const blockedCount = vue.ref(0);
+      const state = vue.reactive({
+        keyword: "",
+        limit: 10,
+        isRunning: false,
+        isStopped: false,
+        blockedCount: 0,
+        keywordBlockedCount: 0,
+        currentKeyword: "",
+        onlyVerified: false,
+        showAdvanced: false,
+        delay: 1e3,
+        pageDelay: 2e3
+      });
       const currentPlatform = getCurrentPlatform();
-      const onlyVerified = vue.ref(false);
-      const showAdvanced = vue.ref(false);
       const logViewerRef = vue.useTemplateRef("logViewer");
-      const delay = vue.ref(1e3);
-      const pageDelay = vue.ref(2e3);
+      function saveSettings() {
+        _GM_setValue(SETTINGS_KEY, JSON.stringify(state));
+      }
+      function loadSettings() {
+        try {
+          const saved = _GM_getValue(SETTINGS_KEY, null);
+          if (saved) {
+            const settings = JSON.parse(saved);
+            Object.assign(state, {
+              keyword: settings.keyword ?? "",
+              limit: settings.limit ?? 10,
+              onlyVerified: settings.onlyVerified ?? false,
+              delay: settings.delay ?? 1e3,
+              pageDelay: settings.pageDelay ?? 2e3,
+              showAdvanced: settings.showAdvanced ?? false,
+              blockedCount: settings.blockedCount ?? 0,
+              keywordBlockedCount: settings.keywordBlockedCount ?? 0,
+              currentKeyword: settings.currentKeyword ?? ""
+            });
+          }
+        } catch (error) {
+          console.error("Failed to load settings:", error);
+        }
+      }
       const templateStore2 = useTemplateStore();
       const keywordTemplates = vue.ref(templateStore2.getTemplates());
       const showDropdown = vue.ref(false);
       const dropdownRef = vue.useTemplateRef("dropdownRef");
       function applyTemplate(keywords2) {
-        keyword.value = keywords2;
+        state.keyword = keywords2;
         showDropdown.value = false;
       }
       function handleClickOutside(event) {
@@ -654,21 +708,30 @@ async fetchCommunityTemplates() {
         }
       }
       vue.onMounted(() => {
+        loadSettings();
         keywordTemplates.value = templateStore2.getTemplates();
         document.addEventListener("click", handleClickOutside);
+        setTimeout(() => {
+          logViewerRef.value?.loadLogs();
+        }, 100);
       });
+      vue.watch(state, () => {
+        saveSettings();
+      }, { deep: true });
       vue.onUnmounted(() => {
+        saveSettings();
         document.removeEventListener("click", handleClickOutside);
       });
       function addLog(msg, color = LogColors.MUTED) {
         logViewerRef.value?.addLog(msg, color);
+        saveSettings();
       }
       async function startTask() {
-        if (!keyword.value.trim()) {
+        if (!state.keyword.trim()) {
           alert("请输入搜索关键词！");
           return;
         }
-        if (limit.value < 0) {
+        if (state.limit < 0) {
           alert("拉黑数量输入不正确");
           return;
         }
@@ -676,29 +739,32 @@ async fetchCommunityTemplates() {
           alert("当前平台不支持！请在抖音或哔哩哔哩网页版使用");
           return;
         }
-        isRunning.value = true;
-        isStopped.value = false;
-        blockedCount.value = 0;
+        state.isRunning = true;
+        state.isStopped = false;
+        state.blockedCount = 0;
+        state.keywordBlockedCount = 0;
+        state.currentKeyword = "";
         logViewerRef.value?.clearLogs();
-        const keywords2 = keyword.value.split(/[,，]/).map((k) => k.trim()).filter((k) => k);
-        for (let i = 0; i < keywords2.length && !isStopped.value; i++) {
+        const keywords2 = state.keyword.split(/[,，]/).map((k) => k.trim()).filter((k) => k);
+        for (let i = 0; i < keywords2.length && !state.isStopped; i++) {
           const currentKeyword = keywords2[i];
           addLog(`[${i + 1}/${keywords2.length}] 开始处理关键词「${currentKeyword}」`, LogColors.PRIMARY);
           await processKeyword(currentKeyword);
-          if (i < keywords2.length - 1 && !isStopped.value) {
+          if (i < keywords2.length - 1 && !state.isStopped) {
             addLog(`关键词「${currentKeyword}」处理完成，等待 2 秒后处理下一个...`, LogColors.MUTED);
             await sleep(2e3);
           }
         }
-        addLog(`所有任务结束！共成功拉黑 ${blockedCount.value} 个用户`, LogColors.PRIMARY);
-        isRunning.value = false;
+        addLog(`所有任务结束！共成功拉黑 ${state.blockedCount} 个用户`, LogColors.PRIMARY);
+        state.isRunning = false;
       }
-      async function processKeyword(currentKeyword) {
+      async function processKeyword(keywordName) {
+        state.currentKeyword = keywordName;
+        state.keywordBlockedCount = 0;
         let currentPage = 0;
-        const keywordStartCount = blockedCount.value;
-        while (!isStopped.value && (limit.value === 0 || blockedCount.value < limit.value)) {
+        while (!state.isStopped && (state.limit === 0 || state.keywordBlockedCount < state.limit)) {
           addLog(`获取第 ${currentPage + 1} 页用户...`, LogColors.INFO);
-          const { users, hasMore } = await currentPlatform.searchUsers(currentKeyword, currentPage, (msg) => {
+          const { users, hasMore } = await currentPlatform.searchUsers(keywordName, currentPage, (msg) => {
             addLog(msg, LogColors.INFO);
           });
           if (users.length === 0) {
@@ -706,7 +772,7 @@ async fetchCommunityTemplates() {
             break;
           }
           for (const item of users) {
-            if (limit.value > 0 && blockedCount.value >= limit.value || isStopped.value)
+            if (state.limit > 0 && state.keywordBlockedCount >= state.limit || state.isStopped)
               break;
             const user = {
               nickname: item.user_info.nickname,
@@ -718,28 +784,28 @@ async fetchCommunityTemplates() {
               addLog(`已拉黑：${user.nickname}（跳过）`, LogColors.MUTED);
               continue;
             }
-            if (onlyVerified.value && PlatformUtils.isBilibili(currentPlatform) && !PlatformUtils.isVerifiedUser(currentPlatform, item.user_info)) {
+            if (state.onlyVerified && PlatformUtils.isBilibili(currentPlatform) && !PlatformUtils.isVerifiedUser(currentPlatform, item.user_info)) {
               addLog(`非认证用户：${user.nickname}（跳过）`, LogColors.MUTED);
               continue;
             }
             if (await currentPlatform.blockUser(user)) {
-              blockedCount.value++;
+              state.keywordBlockedCount++;
+              state.blockedCount++;
               addLog(`✅ 拉黑成功：${user.nickname}`, LogColors.SUCCESS);
             } else {
               addLog(`❌ 拉黑失败：${user.nickname}`, LogColors.ERROR);
             }
-            await sleep(delay.value);
+            await sleep(state.delay);
           }
           if (!hasMore)
             break;
           currentPage++;
-          await sleep(pageDelay.value);
+          await sleep(state.pageDelay);
         }
-        const keywordCount = blockedCount.value - keywordStartCount;
-        addLog(`关键词「${currentKeyword}」处理完成，拉黑 ${keywordCount} 个用户`, LogColors.PRIMARY);
+        addLog(`关键词「${keywordName}」处理完成，拉黑 ${state.keywordBlockedCount} 个用户`, LogColors.PRIMARY);
       }
       function stopTask() {
-        isStopped.value = true;
+        state.isStopped = true;
         addLog("任务已停止", LogColors.ERROR);
       }
       return (_ctx, _cache) => {
@@ -748,12 +814,12 @@ async fetchCommunityTemplates() {
             _cache[7] || (_cache[7] = vue.createElementVNode("label", null, "搜索关键词：", -1)),
             vue.createElementVNode("div", _hoisted_3$2, [
               vue.withDirectives(vue.createElementVNode("input", {
-                "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => keyword.value = $event),
+                "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => state.keyword = $event),
                 type: "text",
                 placeholder: "用逗号分隔，例如：新闻,日报,资讯",
-                disabled: isRunning.value
+                disabled: state.isRunning
               }, null, 8, _hoisted_4$2), [
-                [vue.vModelText, keyword.value]
+                [vue.vModelText, state.keyword]
               ]),
               vue.createElementVNode("div", {
                 ref_key: "dropdownRef",
@@ -762,7 +828,7 @@ async fetchCommunityTemplates() {
               }, [
                 vue.createElementVNode("button", {
                   class: "dropdown-btn",
-                  disabled: isRunning.value,
+                  disabled: state.isRunning,
                   onClick: _cache[1] || (_cache[1] = ($event) => showDropdown.value = !showDropdown.value)
                 }, " 📋 预设 ▼ ", 8, _hoisted_5$2),
                 showDropdown.value ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_6$2, [
@@ -781,31 +847,30 @@ async fetchCommunityTemplates() {
             ])
           ]),
           vue.createElementVNode("div", _hoisted_10$1, [
-            _cache[8] || (_cache[8] = vue.createElementVNode("label", null, "拉黑数量：", -1)),
+            _cache[8] || (_cache[8] = vue.createElementVNode("label", null, "目标拉黑数量(每个关键词)：", -1)),
             vue.withDirectives(vue.createElementVNode("input", {
-              "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => limit.value = $event),
+              "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => state.limit = $event),
               type: "number",
               min: "0",
-              max: "50",
-              disabled: isRunning.value
+              disabled: state.isRunning
             }, null, 8, _hoisted_11$1), [
               [
                 vue.vModelText,
-                limit.value,
+                state.limit,
                 void 0,
                 { number: true }
               ]
             ]),
-            _cache[9] || (_cache[9] = vue.createElementVNode("div", { class: "hint" }, " 拉黑数量0表示不限制，直到无搜索结果 ", -1))
+            _cache[9] || (_cache[9] = vue.createElementVNode("div", { class: "hint" }, " 数量 0 表示不限制，直到无搜索结果 ", -1))
           ]),
           vue.unref(PlatformUtils).isBilibili(vue.unref(currentPlatform)) ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_12$1, [
             vue.createElementVNode("label", _hoisted_13$1, [
               vue.withDirectives(vue.createElementVNode("input", {
-                "onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => onlyVerified.value = $event),
+                "onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => state.onlyVerified = $event),
                 type: "checkbox",
-                disabled: isRunning.value
+                disabled: state.isRunning
               }, null, 8, _hoisted_14$1), [
-                [vue.vModelCheckbox, onlyVerified.value]
+                [vue.vModelCheckbox, state.onlyVerified]
               ]),
               _cache[10] || (_cache[10] = vue.createTextVNode(" 只拉黑认证用户 ", -1))
             ])
@@ -813,27 +878,25 @@ async fetchCommunityTemplates() {
           vue.createElementVNode("div", _hoisted_15$1, [
             vue.createElementVNode("div", {
               class: "advanced-toggle",
-              onClick: _cache[4] || (_cache[4] = ($event) => showAdvanced.value = !showAdvanced.value)
+              onClick: _cache[4] || (_cache[4] = ($event) => state.showAdvanced = !state.showAdvanced)
             }, [
               _cache[11] || (_cache[11] = vue.createElementVNode("span", null, "高级设置", -1)),
               vue.createElementVNode("span", {
-                class: vue.normalizeClass(["arrow", { expanded: showAdvanced.value }])
+                class: vue.normalizeClass(["arrow", { expanded: state.showAdvanced }])
               }, "▼", 2)
             ]),
             vue.withDirectives(vue.createElementVNode("div", _hoisted_16$1, [
               vue.createElementVNode("div", _hoisted_17$1, [
                 _cache[12] || (_cache[12] = vue.createElementVNode("label", null, "操作间隔（毫秒）：", -1)),
                 vue.withDirectives(vue.createElementVNode("input", {
-                  "onUpdate:modelValue": _cache[5] || (_cache[5] = ($event) => delay.value = $event),
+                  "onUpdate:modelValue": _cache[5] || (_cache[5] = ($event) => state.delay = $event),
                   type: "number",
-                  min: "500",
-                  max: "5000",
                   step: "100",
-                  disabled: isRunning.value
+                  disabled: state.isRunning
                 }, null, 8, _hoisted_18$1), [
                   [
                     vue.vModelText,
-                    delay.value,
+                    state.delay,
                     void 0,
                     { number: true }
                   ]
@@ -843,16 +906,14 @@ async fetchCommunityTemplates() {
               vue.createElementVNode("div", _hoisted_19$1, [
                 _cache[14] || (_cache[14] = vue.createElementVNode("label", null, "翻页间隔（毫秒）：", -1)),
                 vue.withDirectives(vue.createElementVNode("input", {
-                  "onUpdate:modelValue": _cache[6] || (_cache[6] = ($event) => pageDelay.value = $event),
+                  "onUpdate:modelValue": _cache[6] || (_cache[6] = ($event) => state.pageDelay = $event),
                   type: "number",
-                  min: "1000",
-                  max: "10000",
                   step: "100",
-                  disabled: isRunning.value
+                  disabled: state.isRunning
                 }, null, 8, _hoisted_20$1), [
                   [
                     vue.vModelText,
-                    pageDelay.value,
+                    state.pageDelay,
                     void 0,
                     { number: true }
                   ]
@@ -860,37 +921,44 @@ async fetchCommunityTemplates() {
                 _cache[15] || (_cache[15] = vue.createElementVNode("div", { class: "hint" }, " 每次翻页后的等待时间 ", -1))
               ])
             ], 512), [
-              [vue.vShow, showAdvanced.value]
+              [vue.vShow, state.showAdvanced]
             ])
           ]),
           vue.createElementVNode("div", _hoisted_21, [
             vue.createElementVNode("button", {
               class: "btn-start",
-              disabled: isRunning.value,
+              disabled: state.isRunning,
               onClick: startTask
             }, " 开始拉黑 ", 8, _hoisted_22)
           ]),
           vue.createElementVNode("div", _hoisted_23, [
             vue.createElementVNode("button", {
               class: "btn-stop",
-              disabled: !isRunning.value,
+              disabled: !state.isRunning,
               onClick: stopTask
             }, " 停止任务 ", 8, _hoisted_24)
           ]),
           vue.createVNode(LogViewer, {
             ref: "logViewer",
-            filename: "拉黑日志"
-          }, null, 512),
+            filename: "拉黑日志",
+            "log-key": `blocking-${vue.unref(currentPlatform)?.name || "unknown"}`
+          }, null, 8, ["log-key"]),
           vue.createElementVNode("div", _hoisted_25, [
-            _cache[16] || (_cache[16] = vue.createTextVNode(" 已拉黑：", -1)),
-            vue.createElementVNode("span", _hoisted_26, vue.toDisplayString(blockedCount.value), 1),
-            vue.createTextVNode(vue.toDisplayString(limit.value > 0 ? ` / ${limit.value}` : ""), 1)
+            state.currentKeyword ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_26, [
+              vue.createTextVNode(vue.toDisplayString(state.currentKeyword) + "：已拉黑：", 1),
+              vue.createElementVNode("span", _hoisted_27, vue.toDisplayString(state.keywordBlockedCount), 1),
+              vue.createTextVNode(vue.toDisplayString(state.limit > 0 ? ` / ${state.limit}` : "") + " | 总计：", 1),
+              vue.createElementVNode("span", _hoisted_28, vue.toDisplayString(state.blockedCount), 1)
+            ])) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_29, [
+              _cache[16] || (_cache[16] = vue.createTextVNode("已拉黑：", -1)),
+              vue.createElementVNode("span", _hoisted_30, vue.toDisplayString(state.blockedCount), 1)
+            ]))
           ])
         ]);
       };
     }
   });
-  const BlockingTool = _export_sfc(_sfc_main$3, [["__scopeId", "data-v-bba5d353"]]);
+  const BlockingTool = _export_sfc(_sfc_main$3, [["__scopeId", "data-v-8bf53d79"]]);
   const _hoisted_1$2 = { class: "content-wrapper" };
   const _sfc_main$2 = vue.defineComponent({
     __name: "FloatingBall",

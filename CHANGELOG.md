@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/Steven-Qiang/social-block-kit/compare/v1.3.1...v1.3.2) (2025-12-21)
+
+
+### Bug Fixes
+
+* 修复多关键词拉黑计数显示问题 ([bea0108](https://github.com/Steven-Qiang/social-block-kit/commit/bea0108f7fa65b88b4b988a02da587157fd5de9e))
+
 ## [1.3.1](https://github.com/Steven-Qiang/social-block-kit/compare/v1.3.0...v1.3.1) (2025-12-21)
 
 
