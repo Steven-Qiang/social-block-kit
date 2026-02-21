@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/Steven-Qiang/social-block-kit/compare/v1.3.2...v1.4.0) (2026-02-21)
+
+
+### Features
+
+* 抖音新增认证用户过滤，修复抖音搜索 ([1e03395](https://github.com/Steven-Qiang/social-block-kit/commit/1e033955c16a79e01f505672318b0f78242d60a9))
+
 ## [1.3.2](https://github.com/Steven-Qiang/social-block-kit/compare/v1.3.1...v1.3.2) (2025-12-21)
 
 
