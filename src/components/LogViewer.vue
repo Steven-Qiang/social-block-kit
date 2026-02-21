@@ -9,8 +9,8 @@
         <button class="log-control-btn" :title="logExpanded ? '收起日志' : '展开日志'" @click="logExpanded = !logExpanded">
           {{ logExpanded ? '▲' : '▼' }}
         </button>
-        <button class="log-control-btn" title="导出日志" @click="exportLogs">
-          💾
+        <button class="log-control-btn" title="清除日志" @click="clearLogs">
+          🗑️
         </button>
       </div>
     </div>
@@ -83,25 +83,6 @@ function addLog(msg: string, color = '#333') {
 function clearLogs() {
   logs.value = [];
   saveLogs();
-}
-
-function exportLogs() {
-  if (logs.value.length === 0) {
-    alert('没有日志可导出');
-    return;
-  }
-
-  const logText = logs.value.map((log) => `[${log.time}] ${log.msg}`).join('\n');
-  const blob = new Blob([logText], { type: 'text/plain;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `${props.filename}_${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.txt`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
 }
 
 defineExpose({

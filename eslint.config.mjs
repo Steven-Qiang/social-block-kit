@@ -27,6 +27,7 @@ function config(options = {}, ...userConfigs) {
         },
       },
       unicorn: false,
+      pnpm: false,
       ...options,
     },
     {
@@ -68,6 +69,6 @@ function config(options = {}, ...userConfigs) {
         'prefer-template': 'warn',
       },
     },
-    ...userConfigs
+    ...userConfigs,
   );
 }

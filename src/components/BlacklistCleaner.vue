@@ -1,12 +1,12 @@
 <template>
   <div class="content">
     <div class="form-group">
-      <button class="btn-start" :disabled="isRunning" @click="startCleanup">
+      <button class="btn-start" title="开始清理黑名单中的所有用户" :disabled="isRunning" @click="startCleanup">
         开始清理黑名单
       </button>
     </div>
     <div class="form-group">
-      <button class="btn-stop" :disabled="!isRunning" @click="stopCleanup">
+      <button class="btn-stop" title="停止清理任务" :disabled="!isRunning" @click="stopCleanup">
         停止清理
       </button>
     </div>

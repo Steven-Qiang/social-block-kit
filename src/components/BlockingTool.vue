@@ -1,6 +1,9 @@
 <!-- eslint-disable no-alert -->
 <template>
   <div class="content">
+    <div v-if="PlatformUtils.isDouyin(currentPlatform) && isDouyinSearchPage" class="warning-banner">
+      ⚠️ 不建议在抖音搜索页面使用本脚本，可能触发风控导致搜索失败！请切换到其他页面使用。
+    </div>
     <div class="form-group">
       <label>搜索关键词：</label>
       <div class="input-with-dropdown">
@@ -8,6 +11,7 @@
         <div ref="dropdownRef" class="template-dropdown">
           <button
             class="dropdown-btn"
+            title="选择预设关键词模板"
             :disabled="state.isRunning"
             @click="showDropdown = !showDropdown"
           >
@@ -34,11 +38,18 @@
         数量 0 表示不限制，直到无搜索结果
       </div>
     </div>
-    <div v-if="PlatformUtils.isBilibili(currentPlatform)" class="form-group">
+    <div class="form-group">
       <label class="checkbox-label">
         <input v-model="state.onlyVerified" type="checkbox" :disabled="state.isRunning">
         只拉黑认证用户
       </label>
+    </div>
+    <div v-if="state.onlyVerified && PlatformUtils.isDouyin(currentPlatform)" class="form-group">
+      <label>认证类型关键词（可选）：</label>
+      <input v-model="state.verifyFilter" type="text" placeholder="例如：官方,媒体,新闻" :disabled="state.isRunning">
+      <div class="hint">
+        过滤包含指定关键词的认证类型，用逗号分隔，留空表示不过滤
+      </div>
     </div>
     <div class="form-group">
       <div class="advanced-toggle" @click="state.showAdvanced = !state.showAdvanced">
@@ -63,12 +74,12 @@
       </div>
     </div>
     <div class="form-group">
-      <button class="btn-start" :disabled="state.isRunning" @click="startTask">
+      <button class="btn-start" title="开始执行拉黑任务" :disabled="state.isRunning" @click="startTask">
         开始拉黑
       </button>
     </div>
     <div class="form-group">
-      <button class="btn-stop" :disabled="!state.isRunning" @click="stopTask">
+      <button class="btn-stop" title="停止当前拉黑任务" :disabled="!state.isRunning" @click="stopTask">
         停止任务
       </button>
     </div>
@@ -97,6 +108,7 @@ const state = reactive({
   keywordBlockedCount: 0,
   currentKeyword: '',
   onlyVerified: false,
+  verifyFilter: '',
   showAdvanced: false,
   delay: 1000,
   pageDelay: 2000,
@@ -104,6 +116,7 @@ const state = reactive({
 
 const currentPlatform = getCurrentPlatform();
 const logViewerRef = useTemplateRef('logViewer');
+const isDouyinSearchPage = ref(false);
 
 const SETTINGS_KEY = 'social-block-kit-settings';
 
@@ -120,6 +133,7 @@ function loadSettings() {
         keyword: settings.keyword ?? '',
         limit: settings.limit ?? 10,
         onlyVerified: settings.onlyVerified ?? false,
+        verifyFilter: settings.verifyFilter ?? '',
         delay: settings.delay ?? 1000,
         pageDelay: settings.pageDelay ?? 2000,
         showAdvanced: settings.showAdvanced ?? false,
@@ -152,6 +166,12 @@ onMounted(() => {
   loadSettings();
   keywordTemplates.value = templateStore.getTemplates();
   document.addEventListener('click', handleClickOutside);
+
+  // 检查是否在抖音搜索页面
+  if (PlatformUtils.isDouyin(currentPlatform)) {
+    isDouyinSearchPage.value = location.pathname.includes('/search/');
+  }
+
   // 恢复日志
   setTimeout(() => {
     logViewerRef.value?.loadLogs();
@@ -247,9 +267,21 @@ async function processKeyword(keywordName: string) {
         continue;
       }
 
-      if (state.onlyVerified && PlatformUtils.isBilibili(currentPlatform) && !PlatformUtils.isVerifiedUser(currentPlatform!, item.user_info)) {
+      if (state.onlyVerified && !PlatformUtils.isVerifiedUser(currentPlatform!, item.user_info)) {
         addLog(`非认证用户：${user.nickname}（跳过）`, LogColors.MUTED);
         continue;
+      }
+
+      if (state.onlyVerified && state.verifyFilter && PlatformUtils.isDouyin(currentPlatform)) {
+        const verifyType = PlatformUtils.getVerifyType(currentPlatform!, item.user_info);
+        if (verifyType) {
+          const filters = state.verifyFilter.split(/[,，]/).map((f) => f.trim()).filter((f) => f);
+          const matched = filters.some((filter) => verifyType.includes(filter));
+          if (!matched) {
+            addLog(`认证类型不匹配：${user.nickname} [${verifyType}]（跳过）`, LogColors.MUTED);
+            continue;
+          }
+        }
       }
 
       if (await currentPlatform!.blockUser(user)) {
@@ -403,5 +435,16 @@ function stopTask() {
 
 .item-name {
   flex: 1;
+}
+
+.warning-banner {
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  color: #856404;
+  font-size: 12px;
+  line-height: 1.5;
 }
 </style>

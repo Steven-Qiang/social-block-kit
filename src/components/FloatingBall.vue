@@ -18,7 +18,7 @@
   >
     <div class="header" @mousedown="handleMouseDown">
       <span>{{ title }}</span>
-      <button class="close-btn" @click="isExpanded = false">
+      <button class="close-btn" title="收起面板" @click="isExpanded = false">
         ×
       </button>
     </div>

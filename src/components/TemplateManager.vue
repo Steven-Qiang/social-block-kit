@@ -3,7 +3,7 @@
     <div class="header">
       <h3>预设管理</h3>
       <div>
-        <button class="btn-add" @click="showAddDialog = true">
+        <button class="btn-add" title="创建新的关键词预设" @click="showAddDialog = true">
           ➕ 新建
         </button>
       </div>
@@ -29,13 +29,13 @@
           </div>
         </div>
         <div class="template-actions">
-          <button class="btn-edit" @click="editTemplate(template)">
+          <button class="btn-edit" title="编辑此预设" @click="editTemplate(template)">
             ✏️
           </button>
-          <button class="btn-share" @click="shareTemplate(template)">
+          <button class="btn-share" title="复制预设到剪贴板" @click="shareTemplate(template)">
             📤
           </button>
-          <button class="btn-delete" @click="deleteTemplate(index)">
+          <button class="btn-delete" title="删除此预设" @click="deleteTemplate(index)">
             🗑️
           </button>
         </div>
@@ -49,17 +49,9 @@
         placeholder="粘贴预设 JSON 数据..."
         rows="2"
       />
-      <div class="import-actions">
-        <button class="btn-import" @click="importTemplate">
-          导入
-        </button>
-        <button class="btn-sync" :disabled="isSyncing" @click="syncCommunityTemplates">
-          {{ isSyncing ? '同步中...' : '同步社区' }}
-        </button>
-      </div>
-      <div class="contribute-info">
-        🤝 欢迎贡献新预设：<a href="https://github.com/Steven-Qiang/block-kit-templates" target="_blank">访问 GitHub</a>
-      </div>
+      <button class="btn-import" title="导入预设 JSON 数据" @click="importTemplate">
+        导入
+      </button>
     </div>
 
     <!-- 添加/编辑对话框 -->
@@ -83,10 +75,10 @@
           />
         </div>
         <div class="dialog-actions">
-          <button class="btn-cancel" @click="closeDialog">
+          <button class="btn-cancel" title="取消操作" @click="closeDialog">
             取消
           </button>
-          <button class="btn-save" @click="saveTemplate">
+          <button class="btn-save" title="保存预设" @click="saveTemplate">
             保存
           </button>
         </div>
@@ -98,7 +90,6 @@
 <script setup lang="ts">
 import type { KeywordTemplate } from '../stores/templateStore';
 import { onMounted, ref } from 'vue';
-import { githubTemplateService } from '../services/githubTemplateService';
 import { useTemplateStore } from '../stores/templateStore';
 
 const templateStore = useTemplateStore();
@@ -107,7 +98,6 @@ const templates = ref(templateStore.getTemplates());
 const showAddDialog = ref(false);
 const editingTemplate = ref<KeywordTemplate | null>(null);
 const importText = ref('');
-const isSyncing = ref(false);
 
 const currentTemplate = ref({
   name: '',
@@ -191,23 +181,6 @@ function importTemplate() {
     alert('预设导入成功！');
   } catch {
     alert('预设数据格式错误！');
-  }
-}
-
-async function syncCommunityTemplates() {
-  isSyncing.value = true;
-  try {
-    const result = await githubTemplateService.syncTemplates();
-    if (result.success) {
-      templates.value = templateStore.getTemplates();
-      alert(`成功同步 ${result.imported} 个社区预设！`);
-    } else {
-      alert('同步失败，请检查网络连接！');
-    }
-  } catch {
-    alert('同步失败！');
-  } finally {
-    isSyncing.value = false;
   }
 }
 
@@ -367,42 +340,6 @@ onMounted(() => {
   border-radius: 4px;
   cursor: pointer;
   font-size: 11px;
-}
-
-.import-actions {
-  display: flex;
-  gap: 6px;
-}
-
-.btn-sync {
-  padding: 4px 8px;
-  background: #17a2b8;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 11px;
-}
-
-.btn-sync:disabled {
-  background: #6c757d;
-  cursor: not-allowed;
-}
-
-.contribute-info {
-  margin-top: 8px;
-  font-size: 11px;
-  color: #666;
-  text-align: center;
-}
-
-.contribute-info a {
-  color: #667eea;
-  text-decoration: none;
-}
-
-.contribute-info a:hover {
-  text-decoration: underline;
 }
 
 .dialog-overlay {

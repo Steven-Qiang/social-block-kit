@@ -33,13 +33,36 @@ export class PlatformUtils {
   }
 
   /**
-   * 检查用户是否为认证用户（仅B站）
+   * 检查用户是否为认证用户
    */
   static isVerifiedUser(platform: Platform, userInfo: any): boolean {
     if (this.isBilibili(platform)) {
       return !!userInfo.official_verify;
     }
+    if (this.isDouyin(platform)) {
+      try {
+        const certInfo = userInfo.account_cert_info ? JSON.parse(userInfo.account_cert_info) : null;
+        return certInfo && certInfo.label_style > 0;
+      } catch {
+        return false;
+      }
+    }
     return false;
+  }
+
+  /**
+   * 获取用户认证类型文本（仅抖音）
+   */
+  static getVerifyType(platform: Platform, userInfo: any): string | null {
+    if (this.isDouyin(platform)) {
+      try {
+        const certInfo = userInfo.account_cert_info ? JSON.parse(userInfo.account_cert_info) : null;
+        return certInfo?.label_text || null;
+      } catch {
+        return null;
+      }
+    }
+    return null;
   }
 
   /**

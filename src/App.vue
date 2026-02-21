@@ -11,6 +11,7 @@
     <div v-if="!isBlacklistPage" class="nav-section">
       <button
         class="nav-btn"
+        title="切换到拉黑工具页面"
         :class="{ active: !showTemplateManager }"
         @click="showTemplateManager = false"
       >
@@ -18,6 +19,7 @@
       </button>
       <button
         class="nav-btn"
+        title="切换到预设管理页面"
         :class="{ active: showTemplateManager }"
         @click="showTemplateManager = true"
       >
